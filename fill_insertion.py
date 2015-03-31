@@ -6,6 +6,7 @@
 # insert new strings into old strings, make a list to store the number of the sequence 
 from utils import reftodic
 
+
 def read_insertion(filename):
     """
     read the insertion table in this bed-like format
