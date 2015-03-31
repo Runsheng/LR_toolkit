@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="rightmachine" uploadOnCheckin="c63871b2-4e3e-4a42-93ee-15a35c08e4c9" showNewOnSourceInSync="false" showExcludedInSync="true">
+    <serverData>
+      <paths name="rightmachine">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/2st_nfilled_mapping" />
+            <excludedPath path="/1st_mapping" />
+            <excludedPath path="/3st_inserted_mapping" />
+            <excludedPath path="/4st_split_segment" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myUploadOnCheckinName" value="rightmachine" />
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
