@@ -25,7 +25,7 @@ def read_insertion(filename):
     file_open.close()
     return d
 
-# usage
+# usage todo: need to be modified to be main function
 insertion=read_insertion("insertion_filled.txt")
 record_dict=reftodic("cb4_nfilled.fasta")
 
