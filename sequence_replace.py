@@ -154,5 +154,6 @@ if __name__=="__main__":
     # test code
     N_replace=read_nreplace(N_test_filename="N_text.txt")
     print N_replace[2]
+
     # main code
     sequence_replace()
