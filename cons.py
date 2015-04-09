@@ -1,90 +1,99 @@
+#filename: cons.py
+#Given a consesune matrix, get the cons from the sequence, used to find the replacement of the gapped "N"s
+
 # to get per base coverage at a place
 # the str of the pileup function
 # Class: AlignmentFile.pileup.pileups
 # Classname: AlignmentFile.pileup==pileupcolumn; AlignmentFile.pileup.pileups==pileupread
 # Note: the N_list do not include the end of the gap region, so is needed to be expanded
 
-#filename: cons.py
-#Given a consesune matrix, get the cons from the sequence, used to find the replacement of the gapped "N"s
-
 #todo: change the marix tp pandas or nympy object
-#todo: add the detection of insertion
+#todo: can add a function to convert the
 
 import pysam
 
 def con_sequence(samfile,chro,start,end):
     """
-    from the pysame.Alignmentfile, get the reads in the N region, include the insertion and deletion
+    Input: the opened pysam.Alignmentfile, and a bed interval
+    Out: get the read matrix in a dict
     """
     cons_list={}
     n=0
-    #take the 5 mer 5' and 3' flanking sequence as the input
+    #take 5 mer 5' and 3' flanking sequence together with N as the input
     for pileupcolumn in samfile.pileup(chro,start-5,end+5, truncate=True):
+
+        site_seq=""  # to avoid some UnboundLocalError in python 2.7, give an init value firstly
+
         for pileupread in pileupcolumn.pileups:
-            if n==0: #init all the containers
+
+            if n==0: # init the first containers
                 cons_list[str(pileupread.alignment.query_name)]=[]
 
             if pileupread.indel>0:  # for insertion
                 site_seq=pileupread.alignment.query_sequence[pileupread.query_position:(pileupread.query_position+pileupread.indel+1)]
-            if pileupread.is_del:  #for deletion
+            if pileupread.is_del:  # for deletion
                 site_seq="-"
             else:
-                if pileupread.indel==0:  # for 1:1 match N:N
+                if pileupread.indel==0:  # for 1:1 matched nuclitide
+                    site_seq=pileupread.alignment.query_sequence[pileupread.query_position]
+                if pileupread.indel<0:  # for the insertion nucl followed by a deletion, should be treated as the 1:1 matched
                     site_seq=pileupread.alignment.query_sequence[pileupread.query_position]
 
-            cons_list[str(pileupread.alignment.query_name)].extend(list(site_seq))
-        n+=1
-    #print n
+            #  need to add some new read to the dict, add more containers
+            try:
+                cons_list[str(pileupread.alignment.query_name)].extend(list(site_seq))
+                con_length=len(cons_list[str(pileupread.alignment.query_name)])
+            except KeyError:
+                cons_list[str(pileupread.alignment.query_name)]=["0"]*(con_length-1)  # the current one has not been popped,so need a -1
+                cons_list[str(pileupread.alignment.query_name)].extend(list(site_seq))
+        n+=1  # n stand for the nucl number of the reference, not the matrix
+
+        # Test code for the length of the cons_list
+    #print chro,start,end
     return cons_list
 
 
-def con_matrix(samfile,chro,start,end):
+def con_matrix(cons_list):
     """
     the samfile should be opened outside the function to avoid too much I/O
     from the same region of the bam file, get all the sequence from read for each position
     return 5 list: ATGC DEL
     """
-    #initiate the matrix，need to be reasigned
-    gaplength=end-start # note the end need to be +1 in the input, from the N_list
-    A=[0]*gaplength
-    C=[0]*gaplength
-    G=[0]*gaplength
-    T=[0]*gaplength
-    DEL=[0]*gaplength
+    try:
+        gaplength=len(cons_list.values()[0])
 
-    #write values to the matrix
-    #直接选头尾所在的序列位置？
-    n=0
-    for pileupcolumn in samfile.pileup(chro,start,end, truncate=True):
-        for pileupread in pileupcolumn.pileups:
-            site_seq=pileupread.alignment.query_sequence[pileupread.query_position]
-            #print pileupread.indel
-            #print pileupread.query_position
-            #test if it is del first
-            if pileupread.is_del:
-                DEL[n]+=1
-            elif site_seq in "Aa":
-                A[n]+=1
-            elif site_seq in "Cc":
-                C[n]+=1
-            elif site_seq in "Gg":
-                G[n]+=1
-            elif site_seq in "Tt":
-                T[n]+=1
+        A=[0]*gaplength
+        C=[0]*gaplength
+        G=[0]*gaplength
+        T=[0]*gaplength
+        DEL=[0]*gaplength
 
-        coverage=pileupcolumn.n  # for each site, get the coverage, the coverage should be expained fullly by the deletion and the nuclitides
-        #add a test of coverage
-        if coverage==(DEL[n]+A[n]+C[n]+G[n]+T[n]):
-            pass
-        else:
-            print "Coverage count error at %s:%s" % (chro,pileupcolumn.pos)
-        n+=1
+        for seq in cons_list.values():
+            for n in range(0,len(seq)):
+                if seq[n] in "Aa":
+                    A[n]+=1
+                if seq[n] in "Cc":
+                    C[n]+=1
+                if seq[n] in "Gg":
+                    G[n]+=1
+                if seq[n] in "Tt":
+                    T[n]+=1
+                if seq[n]=="-":
+                    DEL[n]+=1
+    # if the dict is empty, then make some empty lists directly
+    except IndexError:
+        gaplength=0
+        A=[0]*gaplength
+        C=[0]*gaplength
+        G=[0]*gaplength
+        T=[0]*gaplength
+        DEL=[0]*gaplength
 
     return (DEL,A,C,G,T)
 
 def cons(DEL,A,C,G,T):
     """
-    Given: four list contains the DEL,A,C,G,T frenqency
+    Given: five list contains the DEL,A,C,G,T frenqency
     Return: the consensus string of the matrix
     """
     cons_string=[]
@@ -92,7 +101,7 @@ def cons(DEL,A,C,G,T):
         col={"-":DEL[i],"A":A[i], "C":C[i], "G":G[i], "T":T[i]}
         #design model: search
         max_n=max(col.values())
-        if max_n==0:  #avoid no coverage status
+        if max_n==0:  # avoid no coverage status
             pass
         else:
             for key in col.keys():
@@ -105,13 +114,37 @@ def cons(DEL,A,C,G,T):
                     #print "Dupilicated best!"
     return "".join(cons_string)
 
+def write_nreplace():
+    # main code
+    with open("N_text.txt","w") as f:
+        for N_single in N_list:
+            #print N_single
+            chro, start,end =N_single
+
+            matrix=con_matrix(con_sequence(samfile, chro,start,end+1))
+            DEL,A,C,G,T=matrix
+            sequence=cons(DEL,A,C,G,T)
+
+            name,seq_raw=chr_select(record_dict, chro,start-5,end+1+5)
+
+            f.write(name)
+            f.write("\t")
+            f.write(seq_raw)
+            f.write("\t")
+            f.write(sequence)
+            f.write("\n")
+
 if __name__=="__main__":
     samfile = pysam.AlignmentFile("cb12i_s.bam", "rb")
-    N_list_new=N_list[136:137]
+    #test code
+    N_list_new=N_list[264:265]
     for N_single in N_list_new:
-        #print N_single
+        print N_single
         chro, start,end =N_single
         aa=con_sequence(samfile, chro,start,end+1)
-        DEL,A,C,G,T=con_matrix(samfile, chro,start,end+1) #note the +1 is still needed
+        bb=con_matrix(aa)
+        DEL,A,C,G,T=bb
         sequence=cons(DEL,A,C,G,T)
         print sequence
+
+    write_nreplace()
