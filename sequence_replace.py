@@ -11,7 +11,7 @@ def parse_nline(line):
     # using "" as last element of empty seq_new
     try:
         seq_new=line.split("\t")[2].strip().upper()
-    except Exception:
+    except IndexError:
         seq_new=""
     return name, seq_raw,seq_new
 
