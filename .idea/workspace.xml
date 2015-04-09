@@ -56,8 +56,8 @@
       <file leaf-file-name="sequence_replace.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sequence_replace.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.2797928" vertical-offset="1109" max-vertical-offset="3135">
-              <caret line="151" column="0" selection-start-line="151" selection-start-column="0" selection-end-line="151" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.3328859" vertical-offset="1310" max-vertical-offset="3135">
+              <caret line="82" column="26" selection-start-line="82" selection-start-column="26" selection-end-line="82" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -688,7 +688,13 @@
       <option name="project" value="LOCAL" />
       <updated>1428566775001</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="add new function to replace some region with new region">
+      <created>1428566839532</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1428566839532</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -781,7 +787,8 @@
     <MESSAGE value="change the md coding method" />
     <MESSAGE value="add the from bam file get m6 table function" />
     <MESSAGE value="add some new function&#10;&#10;such as write fasta, select N" />
-    <option name="LAST_COMMIT_MESSAGE" value="add some new function&#10;&#10;such as write fasta, select N" />
+    <MESSAGE value="add new function to replace some region with new region" />
+    <option name="LAST_COMMIT_MESSAGE" value="add new function to replace some region with new region" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1174,8 +1181,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sequence_replace.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.2797928" vertical-offset="1109" max-vertical-offset="3135">
-          <caret line="151" column="0" selection-start-line="151" selection-start-column="0" selection-end-line="151" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.3328859" vertical-offset="1310" max-vertical-offset="3135">
+          <caret line="82" column="26" selection-start-line="82" selection-start-column="26" selection-end-line="82" selection-end-column="26" />
           <folding />
         </state>
       </provider>
