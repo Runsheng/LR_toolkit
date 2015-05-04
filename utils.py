@@ -45,7 +45,7 @@ def dic2fasta(record_dict,out="record_dict.fasta"):
             f.write(seq)
             f.write("\n")
 
-import subprocess, signal, logging, os
+import subprocess, signal, logging, os  # for the exe function
 
 class Alarm(Exception):
     pass
