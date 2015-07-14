@@ -18,3 +18,7 @@
 
 #### 4.Keep in mind that the filling of Ns is used for the precise break point detection
 
+### The following py files are mainly used in N_fill
+- summary_N.py, **pre-run** functions, summarize the "N"s in the genome, deposit the N_dict into pickle file
+- sequence_replace.py, **run** functions, the operation function that change the "N"s into "ACTG"
+- check_N.py, **post-run** functions, check the deposited pickle file to restore the N_dict
