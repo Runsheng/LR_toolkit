@@ -7,8 +7,8 @@
 # Classname: AlignmentFile.pileup==pileupcolumn; AlignmentFile.pileup.pileups==pileupread
 # Note: the N_list do not include the end of the gap region, so is needed to be expanded
 
-#todo: change the marix tp pandas or nympy object
-#todo: can add a function to convert the
+# todo: change the marix tp pandas or nympy object and speed it up
+# todo: can add a function to convert the
 
 import pysam
 
@@ -26,7 +26,7 @@ def con_sequence(samfile,chro,start,end):
 
         for pileupread in pileupcolumn.pileups:
 
-            if n==0: # init the first containers
+            if n==0: # init the first container
                 cons_list[str(pileupread.alignment.query_name)]=[]
 
             if pileupread.indel>0:  # for insertion
@@ -49,7 +49,7 @@ def con_sequence(samfile,chro,start,end):
         n+=1  # n stand for the nucl number of the reference, not the matrix
 
         # Test code for the length of the cons_list
-    #print chro,start,end
+    # print chro,start,end
     return cons_list
 
 
@@ -136,7 +136,7 @@ def write_nreplace():
 
 if __name__=="__main__":
     samfile = pysam.AlignmentFile("cb12i_s.bam", "rb")
-    #test code
+    # test code
     N_list_new=N_list[264:265]
     for N_single in N_list_new:
         print N_single
@@ -146,5 +146,5 @@ if __name__=="__main__":
         DEL,A,C,G,T=bb
         sequence=cons(DEL,A,C,G,T)
         print sequence
-
+    # main code
     write_nreplace()

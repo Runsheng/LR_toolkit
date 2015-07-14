@@ -1,22 +1,7 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import pysam
-
-# samfile=pysam.AlignmentFile("cb12nin_s.bam", "rb")
-
-
-def max_get(listname):
-    """
-    :param listname, a list containning some sequence strings;
-    :return: the longest sequence string in the list.
-    """
-    max_length=len(listname[0])
-    for n in range(1,len(listname)):
-        if len(listname[n])>max_length:
-            max_length=len(listname[n])
-    for element in listname:
-        if len(element)==max_length:
-            chose=element
-    return chose
+from utils import max_get
 
 
 def edge_parse(samfile):

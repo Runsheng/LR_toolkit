@@ -8,9 +8,8 @@ from utils import fasta2dic
 
 def read_insertion(filename):
     """
-    read the insertion table in this bed-like format
-    chr\tstart\tend\tsequence\n
-    into a dict
+    :param filename is the bed file name for the insertion, as "chr\tstart\tend\tsequence\n"
+    :return a dict as {insertion:seq}, for example {"I:130^131":"AAATTTTCCC"}
     """
     d={}
     file_open=open(filename)
