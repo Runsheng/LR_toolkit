@@ -80,15 +80,12 @@ def myexe(cmd, timeout=0):
     out, err = proc.communicate()
     return out, err, proc.returncode
 
-# test code
-# print myexe("ls")[0]
+def bwa_index(fastafile):
+    myexe("bwa index %s" % fastafile)
 
-def bwaindex(fastafile):
+def bwa_mem(core=15, ):
     pass
 
-def bwamem():
-    cmd="bwa mem"
-
 ### unit test code ###
-if __name__=="__main__":
-    print "aa"
+if __name__== "__main__":
+    print myexe("ls")[0]
