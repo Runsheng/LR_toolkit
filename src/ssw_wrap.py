@@ -12,7 +12,7 @@ library and update the cache by using /sbin/ldconfig as root
 #~~~~~~~GLOBAL IMPORTS~~~~~~~#
 # Standard library packages
 from ctypes import *
-
+import re
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 class CAlignRes(Structure):
     """
@@ -369,14 +369,11 @@ class PyAlignRes(object):
         return cigar_string
 
 #~~~~~~~DISPLAY METHODS~~~~~~~#
-def getBlastRepresentation(read):
+def getBlastRepresentation(read_seq, genome_seq, cigar):
     """
-    This method is forked from https://github.com/svviz/svviz/blob/master/src/svviz/
+    This method is forked and modified from https://github.com/svviz/svviz/blob/master/src/svviz/
     To show the alignmnet using cigar string
     """
-    return _getBlastRepresentation(read.seq, read.genome_seq, read.cigar)
-
-def _getBlastRepresentation(read_seq, genome_seq, cigar):
     pattern = re.compile('([0-9]*)([MIDNSHP=X])')
 
     seqout = []
