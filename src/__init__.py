@@ -4,7 +4,8 @@
 @brief      **SSW** is a python interface with a higly efficient Smith-Waterman library written in C language. A dynamic library add to be compliled
 to interface C and python by using the Makefile. This will generate libssw.so require for proper program execution.
 
-* The python wrapper 'ssw_wrapp" allow to perform high performance pairwise DNA alignment a return a simple python object describing the alignement. * pyssw.py is a standalone high level interface to send multiple queries to a reference than return results as a sam file 
+* The python wrapper 'ssw_wrapp" allow to perform high performance pairwise DNA alignment and return a simple python object describing the alignement.
+* pyssw.py is a standalone high level interface to send multiple queries to a reference than return results as a sam file
 * C sources ssw.c and ssw.h were forked and modified from Mengyao's [Complete-Striped-Smith-Waterman-Library](https://github.com/mengyao/Complete-Striped-Smith-Waterman-Library)
 
 @copyright  [GNU General Public License v2](http://www.gnu.org/licenses/gpl-2.0.html)
@@ -15,4 +16,9 @@ to interface C and python by using the Makefile. This will generate libssw.so re
 * [Github](https://github.com/a-slide)
 * [Atlantic Gene Therapies - INSERM 1089] (http://www.atlantic-gene-therapies.fr/)
 """
+import os
+cwd=os.getcwd()
+#todo: This should be added in th install step, export as $PWD
+os.system("export LD_LIBRARY_PATH=/home/li/dna/Complete-Striped-Smith-Waterman-Library/src/")
+
 __all__ = ["ssw_wrap", "pyssw"]

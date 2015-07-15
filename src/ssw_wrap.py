@@ -367,3 +367,57 @@ class PyAlignRes(object):
             cigar_string += '{}{}'.format(op_len, op_char)
 
         return cigar_string
+
+#~~~~~~~DISPLAY METHODS~~~~~~~#
+def getBlastRepresentation(read):
+    """
+    This method is forked from https://github.com/svviz/svviz/blob/master/src/svviz/
+    To show the alignmnet using cigar string
+    """
+    return _getBlastRepresentation(read.seq, read.genome_seq, read.cigar)
+
+def _getBlastRepresentation(read_seq, genome_seq, cigar):
+    pattern = re.compile('([0-9]*)([MIDNSHP=X])')
+
+    seqout = []
+    genomeout = []
+    matches = []
+
+    genomepos = 0
+    seqpos = 0
+
+    for length, code in pattern.findall(cigar):
+        length = int(length)
+
+        if code == "M":
+            for i in range(length):
+                g = genome_seq[genomepos]
+                s = read_seq[seqpos]
+
+                seqout.append(s)
+                genomeout.append(g)
+
+                if g == s:
+                    matches.append("|")
+                else:
+                    matches.append("*")
+
+                genomepos += 1
+                seqpos += 1
+        elif code in "D":
+            for i in range(length):
+                g = genome_seq[genomepos]
+                genomeout.append(g)
+                seqout.append("-")
+                matches.append("x")
+                genomepos += 1
+        elif code in "IHS":
+            for i in range(length):
+                s = read_seq[seqpos]
+                seqout.append(s)
+                genomeout.append("-")
+                matches.append("#")
+                seqpos += 1
+
+
+    return "READ:  " + "".join(seqout) + "\n" + "       " + "".join(matches) + "\n" + "GENOME:" + "".join(genomeout)
