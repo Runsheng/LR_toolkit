@@ -416,5 +416,4 @@ def getBlastRepresentation(read_seq, genome_seq, cigar):
                 matches.append("#")
                 seqpos += 1
 
-
     return "READ:  " + "".join(seqout) + "\n" + "       " + "".join(matches) + "\n" + "GENOME:" + "".join(genomeout)

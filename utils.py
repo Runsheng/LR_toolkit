@@ -2,7 +2,7 @@
 # prepare some functions that can be used globally, such as read the reference to the memory, read the fastq file to dict
 
 
-# The read operation functions------------------------------------------------------------------------------------------
+# The sequence operation functions--------------------------------------------------------------------------------------
 from Bio import SeqIO
 
 def fastq2dic(fastqfile):
@@ -79,7 +79,9 @@ def max_get(listname):
 
 # The system operation functions----------------------------------------------------------------------------------------
 import subprocess
-import signal # for the exe function
+import signal  # only used for the exe function
+import time
+from functools import wraps
 
 def myexe(cmd, timeout=0):
     """
@@ -100,10 +102,12 @@ def myexe(cmd, timeout=0):
     return out, err, proc.returncode
 
 
-# for the timer function
-from functools import wraps
-import time
 def timer(fn):
+    """
+    Used for debug
+    :param fn: the function
+    :print: the time the function used
+    """
     @wraps(fn)
     def wrapper(*args, **kwargs):
         ts = time.time()

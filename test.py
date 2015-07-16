@@ -9,15 +9,15 @@ os.system("export LD_LIBRARY_PATH=/home/li/dna/Complete-Striped-Smith-Waterman-L
 #print myexe("ls -l")
 
 from src.ssw_wrap import Aligner
-from src.ssw_wrap import getBlastRepresentation
+# from src.ssw_wrap import getBlastRepresentation
 
-seq1="AATCGTCCCCTTTTT"
-seq2="AGTCCCCTTTTT"
+seq1="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAATCGTCCCCTCTCTCT"
+seq2="CGTCCCCTCTCTCT"
 
-aligner = Aligner(seq1, report_cigar=True, report_secondary=True, match=4,mismatch=-1,gap_open=-1)
-aa=aligner.align(seq2)
+aligner = Aligner(seq1, report_cigar=True)
+aln=aligner.align(seq2)
 
+print aln.ref_begin,aln.ref_end,aln.query_begin,aln.query_end,aln.cigar_string
 
-
-print getBlastRepresentation(seq1,seq2, aa.cigar_string)
-
+# here is a wrapper
+from src.ssw_wrap import Aligner
