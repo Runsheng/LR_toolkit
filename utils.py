@@ -39,7 +39,7 @@ def dic2dic(record_dict):
     return seq_dict
 
 
-def chr_select(record_dict, chr, start,end):
+def chr_select(seq_dict, chro, start,end):
     """
     Note the start and end is 0 based
     give the name of refdic, and the chr, start and end to be used
@@ -47,8 +47,8 @@ def chr_select(record_dict, chr, start,end):
     for example, chrcut(record_dict, "I", 100,109) returns
      ("I:100_109","AAAAAAAAAA")
     """
-    name=chr+ ":"+str(start)+"_"+str(end)
-    seq=str(record_dict[chr].seq)[start:end]
+    name=chro+ ":"+str(start)+"_"+str(end)
+    seq=str(seq_dict[chro])[start:end]
     return name,seq
 
 def dic2fasta(record_dict,out="record_dict.fasta"):
@@ -67,6 +67,7 @@ def max_get(listname):
     :param listname, a list containning some sequence strings;
     :return: the longest sequence string in the list.
     """
+    chose=None
     max_length=len(listname[0])
     for n in range(1,len(listname)):
         if len(listname[n])>max_length:
@@ -95,7 +96,7 @@ def myexe(cmd, timeout=0):
     def alarmHandler(signum, frame):
         sys.exit(1)
 
-    proc=subprocess.Popen(cmd, shell=True,preexec_fn=setupAlarm,
+    proc=subprocess.Popen(cmd, shell=True, preexec_fn=setupAlarm,
                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     out, err=proc.communicate()

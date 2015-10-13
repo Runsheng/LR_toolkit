@@ -7,12 +7,18 @@ inclusion of the lib edit /etc/ld.so.conf and add the path or the directory cont
 library and update the cache by using /sbin/ldconfig as root
 @copyright  [The MIT licence](http://opensource.org/licenses/MIT)
 @author     Clement & Adrien Leger - 2014
+
+The abs path of LD_LIBRARY_PATH has been added automatically, however, this may have affected \
+other packages.
+@author    Runsheng - 2015
 """
 
 #~~~~~~~GLOBAL IMPORTS~~~~~~~#
 # Standard library packages
 from ctypes import *
 import re
+import os
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 class CAlignRes(Structure):
     """
@@ -48,7 +54,8 @@ class Aligner(object):
     int_to_base = { 0:'A', 1:'C', 2:'G', 3:'T', 4:'N'}
 
     # Load the ssw library using ctypes
-    libssw = cdll.LoadLibrary('libssw.so')
+    path = os.path.dirname(os.path.realpath(__file__))
+    libssw = cdll.LoadLibrary("%s/libssw.so" % path)
 
     # Init and setup the functions pointer to map the one specified in the SSW lib
     # ssw_init method
@@ -267,7 +274,8 @@ class PyAlignRes(object):
     #~~~~~~~CLASS VARIABLES~~~~~~~#
 
     # Load the ssw library using ctypes
-    libssw = cdll.LoadLibrary('libssw.so')
+    path = os.path.dirname(os.path.realpath(__file__))
+    libssw = cdll.LoadLibrary("%s/libssw.so" % path)
 
     # Init and setup the functions pointer to map the one specified in the SSW lib
     # cigar_int_to_len function
@@ -371,7 +379,7 @@ class PyAlignRes(object):
 #~~~~~~~DISPLAY METHODS~~~~~~~#
 def getBlastRepresentation(read_seq, genome_seq, cigar):
     """
-    This method is forked and modified from https://github.com/svviz/svviz/blob/master/src/svviz/
+    This method is forked and modified from https://github.com/svviz/svviz/blob/master/ssw/svviz/
     To show the alignmnet using cigar string
     """
     pattern = re.compile('([0-9]*)([MIDNSHP=X])')

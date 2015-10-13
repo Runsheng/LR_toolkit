@@ -11,13 +11,13 @@ import pysam
 def parse_bps(filename):
     """
     Turn the CLC parsed breakpoint file "bp.txt" into python list
-    TODO:should be modified to receive bps from different bp parser， add a para for format
+    TODO:should be modified to receive bps from different bp parser， add a para for different formats
     # need to write a parse for the CLC output of BPs
     # cal the percentage of the bps, a bp with some read covering perfectly is not a real bp.
     # the 100% single bp should be retain
-    # for the pair or dupulicated bps, the pertange can not be 100% (they will affect each other), however,
-    # the percentage shold be larger than 80% (ab cutoff)
-    # generate a list containg the (start,end) tuple in order for each chr
+    # for the pair or duplicated bps, the percentage can not be 100% (they will affect each other), however,
+    # the percentage should be larger than 80% (ab cutoff)
+    # generate a list containing the (start,end) tuple in order for each chr
     # this list can be directly used for the chr_select function
 
     Input: the output of breakpoints parsed by CLC genomic workbench 8.0 as txt file, file was sorted(as bed)
@@ -28,7 +28,7 @@ def parse_bps(filename):
     bp_list=[]
     lines=fr.readlines()
 
-    for n in range(1,len(lines)): # the first line should be ignored
+    for n in range(1,len(lines)):  # the first line should be ignored
         linelist=lines[n].strip().split("\t")
 
         try:
@@ -43,7 +43,7 @@ def parse_bps(filename):
             is_mapped_to_self=False if linelist[6]=="" else True
             percentage=float(linelist[-1])/(float(linelist[7])+float(linelist[8]))
 
-        except Exception as e:
+        except IndexError as e:
             print e
 
         bp_single=chro,start,end,seq,l_or_r,length,is_mapped_to_self,percentage
@@ -57,14 +57,17 @@ def filter_bps(bp_list,percent_cutoff=0.95):
     """
     Aim: to get all the pair bps into 1 site, can treat them the same with single.
     Input: the bp_list
-    Output: 3 kinds of BPs, the single, the pair and the duplicate
+    Output: 3 kinds of BPs, the single, the pair and the duplication
+        The "single" is the most seen one that can not be filled, usually between supercontig,
+        The "duplication" can be caused by mapping, using re-alignment may change some into single,
+        The "pair" is the most confidential breakpoint, usually inside the supercontig.
     """
     single=[]
-    dupilicate=[]
+    duplicate=[]
     pair=[]
 
     for n in range(0,len(bp_list)):
-        #print n
+        # print n
         chro,start,end,seq,l_or_r,length,is_mapped_to_self,percentage=bp_list[n]
         try:
             chro_1,start_1,end_1,seq_1,l_or_r_1,length_1,is_mapped_to_self_1,percentage_1=bp_list[n-1] # once I made a mistake here
@@ -77,26 +80,26 @@ def filter_bps(bp_list,percent_cutoff=0.95):
             if chro==chro_1 and start-start_1<=100:
                 # duplication: direction the same as previous
                 if l_or_r==l_or_r_1:
-                    dupilicate.append(bp_list[n-1])
-                    dupilicate.append(bp_list[n])
+                    duplicate.append(bp_list[n-1])
+                    duplicate.append(bp_list[n])
                 else:
                     pair.append(bp_list[n-1])
                     pair.append(bp_list[n])
             # the remainings can not find a pair, and are not duplicated, marked as single,
             # some of the paired ones can also be marked, these will be retained in duplicate and pair
             else:
-                if percentage>0.95:
+                if percentage>percent_cutoff:
                     single.append(bp_list[n])
 
-    # remove the dupilicated elements, the order is duplicate>pair>single
+    # remove the duplicated elements, the order is duplicate>pair>single
     # the intersection of these set indicate the complex duplication region
-    dupilicate=list(set(dupilicate))
-    dupilicate.sort()
+    duplicate=list(set(duplicate))
+    duplicate.sort()
     pair=list(set(pair))
     pair.sort()
-    single=list(set(single)-set(pair)-set(dupilicate))  # almost no overlap in the 3 sets, maybe just 1 or 2, when using percentage cutoff as 0.95
+    single=list(set(single)-set(pair)-set(duplicate))  # almost no overlap in the 3 sets, maybe just 1 or 2, when using percentage cutoff as 0.95
     single.sort()
-    return single,dupilicate,pair
+    return single,duplicate,pair
 
 def filter_duplicate(duplicate,percent_cutoff=0.8):
     """
@@ -183,7 +186,7 @@ def filter_pair(pair,percent_cutoff=0.8):
 
     return pair_normal, pair_abnormal, pair_abnormal_dict
 
-import pysam
+# import pysam
 # samfile=pysam.AlignmentFile("cb12nin_s.bam", "rb")
 
 def edge_parse(samfile):
@@ -224,7 +227,7 @@ def edge_parse(samfile):
     return edge_list
 
 
-def get_sequence(ref, single, duplicate_f, pair_normal, pair_abnormal,pair_abnormal_dict,edge_list):
+def get_sequence(ref, single, duplicate_f, pair_normal, pair_abnormal, pair_abnormal_dict, edge_list):
     """
     NOTE: the bed file is 1 based! NOT 0 based.
     The str of each tuple in lists is (chro,start,end,seq,l_or_r,length,is_mapped_to_self,percentage)
@@ -300,7 +303,7 @@ def get_sequence(ref, single, duplicate_f, pair_normal, pair_abnormal,pair_abnor
                     site_use_start = sites_chro_dict[start]
                     if site_use_start[2]=="L" and name !="":
                         name=name+"_L"+"_"+str(len(site_use_start[3]))
-                        seq=seq+site_use_end[3]
+                        seq=seq+site_use_start[3]
                 except Exception as e:
                     print e
 

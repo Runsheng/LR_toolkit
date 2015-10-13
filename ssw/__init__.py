@@ -16,9 +16,5 @@ to interface C and python by using the Makefile. This will generate libssw.so re
 * [Github](https://github.com/a-slide)
 * [Atlantic Gene Therapies - INSERM 1089] (http://www.atlantic-gene-therapies.fr/)
 """
-import os
-cwd=os.getcwd()
-#todo: This should be added in th install step, export as $PWD
-os.system("export LD_LIBRARY_PATH=/home/li/dna/Complete-Striped-Smith-Waterman-Library/src/")
 
 __all__ = ["ssw_wrap", "pyssw"]
