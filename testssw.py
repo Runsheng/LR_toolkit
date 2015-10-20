@@ -17,7 +17,7 @@ seq2="ATTTTCCAGAAAGTTTGAATTTCTTCAAAAAATTTGAATTCCTGCCAAAAAAATTTTCTTCAAAAATTTTAATT
 aligner = Aligner(seq1, report_cigar=True)
 aln=aligner.align(seq2)
 
-print aln.ref_begin,aln.ref_end,aln.query_begin,aln.query_end,aln.cigar_string
+print aln.score,aln.ref_begin,aln.ref_end,aln.query_begin,aln.query_end,aln.cigar_string
 
 # here is a wrapper
 from ssw.ssw_wrap import Aligner

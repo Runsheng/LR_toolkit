@@ -5,6 +5,7 @@
 # The sequence operation functions--------------------------------------------------------------------------------------
 from Bio import SeqIO
 
+
 def fastq2dic(fastqfile):
     """
     Give a fastq file name, return a dict contains the name and seq
