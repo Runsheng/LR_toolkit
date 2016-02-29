@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="14abf6dd-d87b-412f-a012-74167835cd40" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/Administrator.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Administrator.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/adaptor_trim.py" afterPath="$PROJECT_DIR$/adaptor_trim.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sequence_insert.py" afterPath="$PROJECT_DIR$/sequence_insert.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sequence_replace.py" afterPath="$PROJECT_DIR$/sequence_replace.py" />
     </list>
     <ignored path="LR_tookit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -924,7 +918,13 @@
       <option name="project" value="LOCAL" />
       <updated>1456725908599</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="add gzip support">
+      <created>1456725923745</created>
+      <option name="number" value="00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1456725923745</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
