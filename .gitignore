@@ -81,3 +81,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# temp file
+*.fasta
+*.fastq
+*.fa
+*.fq

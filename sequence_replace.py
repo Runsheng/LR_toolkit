@@ -31,7 +31,7 @@ def read_nreplace(n_text_filename="N_text.txt"):
     for line in f.readlines():
         name,seq_raw,seq_new = parse_nline(line)
 
-        # Jduge the insertion credibility by 3 para: the first 5 nucls, the last 5 nucls and the length of the consensus
+        # Judge the insertion credibility by 3 para: the first 5 nucls, the last 5 nucls and the length of the consensus
 
         # 1. "Filled", The perfect match of the sequence, the most easy way to add in
         if seq_raw[:5]==seq_new[:5] and seq_raw[-5:]==seq_new[-5:] and len(seq_new)>=len(seq_raw):

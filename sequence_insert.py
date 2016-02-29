@@ -47,4 +47,4 @@ def write_insertion(outfile="inserted.fasta"):
         f.write(">"+str(name)+"\n")
         f.write("".join(seq_new))
         f.write("\n")
-    f.close()
+    f.close() b
