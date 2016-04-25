@@ -75,7 +75,7 @@ def dic2fasta(record_dict,out="record_dict.fasta"):
 
 def max_get(listname):
     """
-    :param listname, a list containning some sequence strings;
+    :param listname, a list containing some sequence strings;
     :return: the longest sequence string in the list.
     """
     chose=None
@@ -87,6 +87,23 @@ def max_get(listname):
         if len(element)==max_length:
             chose=element
     return chose
+
+
+def reverse_complement(seq):
+    """
+        Given: A DNA string s of length at most 1000 bp.
+        Return: The reverse complement sc of s.
+        due to the complement_map,
+        the symbol such as \n and something else is illegal
+        the input need to be pure sequence
+    """
+    complement_map = dict(zip("acgtACGTNn-","tgcaTGCANn-"))
+    complement=[]
+    for s in seq:
+        complement.append(complement_map[s])
+        reverse=''.join(reversed(complement))
+    return reverse
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 # The system operation functions----------------------------------------------------------------------------------------
