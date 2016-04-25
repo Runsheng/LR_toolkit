@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/LR_toolkit.iml" filepath="$PROJECT_DIR$/.idea/LR_toolkit.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../PBSuite_15.2.20/.idea/PBSuite_15.2.20.iml" filepath="$PROJECT_DIR$/../PBSuite_15.2.20/.idea/PBSuite_15.2.20.iml" />
+      <module fileurl="file://E:/PycharmProjects/longscaffold/.idea/longscaffold.iml" filepath="E:/PycharmProjects/longscaffold/.idea/longscaffold.iml" />
       <module fileurl="file://$PROJECT_DIR$/../snp-fasta/.idea/snp-fasta.iml" filepath="$PROJECT_DIR$/../snp-fasta/.idea/snp-fasta.iml" />
     </modules>
   </component>
