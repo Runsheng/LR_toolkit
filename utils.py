@@ -61,6 +61,7 @@ def chr_select(seq_dict, chro, start,end):
     seq=str(seq_dict[chro][start:end].seq)
     return name,seq
 
+
 def dic2fasta(record_dict,out="record_dict.fasta"):
     with open(out,"w") as f:
         for record in record_dict.keys():
