@@ -31,7 +31,10 @@ def fasta2dic(fastafile):
     Give a fasta file name, return a dict contains the name and seq
     Require Biopython SeqIO medule to parse the sequence into dict, a large genome may take a lot of RAM
     """
-    handle=open(fastafile, "rU")
+    if ".gz" in fastafile:
+        handle=gzip.open(fastafile, "rU")
+    else:
+        handle=open(fastafile, "rU")
     record_dict=SeqIO.to_dict(SeqIO.parse(handle,"fasta"))
     handle.close()
     return record_dict
