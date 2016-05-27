@@ -27,6 +27,7 @@ def read_insertion(filename):
 insertion=read_insertion("insertion_filled.txt")
 record_dict=fasta2dic("cb4_nfilled.fasta")
 
+
 def write_insertion(outfile="inserted.fasta"):
     f=open(outfile)
     for name in record_dict.keys():
@@ -47,4 +48,4 @@ def write_insertion(outfile="inserted.fasta"):
         f.write(">"+str(name)+"\n")
         f.write("".join(seq_new))
         f.write("\n")
-    f.close() b
+    f.close()

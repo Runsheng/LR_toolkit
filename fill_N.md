@@ -6,7 +6,7 @@
 #### 2. the "Ns" cause some **unaligned end**: find the begin and the end, make realignment with some aligner(bwa?muscle?), and give the Ns some repalcements, and fill the "Ns". When parsing the unaligned ends, some situations should be treated differently:
 - No read support --> ignore, unfilled
 - Unaligned end in both direction
-  - unalign end overlapped at the end --> filled, caculated the length of the read
+  - unalign end overlapped at the end --> filled, calculated the length of the read
   - unalign end do not overlap --> double extended, unfilled
 - Unaligned end in one direction
   - align with the beginning of the other edge (for example, 500bp?)

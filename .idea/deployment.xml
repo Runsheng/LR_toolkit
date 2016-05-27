@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" uploadOnCheckin="c63871b2-4e3e-4a42-93ee-15a35c08e4c9" showNewOnSourceInSync="false" showExcludedInSync="true">
-    <option name="myUploadOnCheckinName" value="rightmachine" />
+  <component name="PublishConfigData" autoUpload="Always" showExcludedInSync="true">
+    <serverData>
+      <paths name="leftmachine">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/li/app/LR_toolkit" local="$PROJECT_DIR$" web="/home/li/LR_toolkit" />
+            <mapping deploy="/home/li/app/longscaffold" local="E:/PycharmProjects/longscaffold" />
+            <mapping deploy="/home/li/app/snp-fasta" local="$PROJECT_DIR$/../snp-fasta" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
     <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

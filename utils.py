@@ -148,10 +148,53 @@ def timer(fn):
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-def bwa_index(ref):
+def wrapper_bwamem(index, read_list, prefix="defualt", core=32):
+    """
+    general wrapper for bwa mem to be used in python cmd line
+    para: index, the bwa index of reference fasta file
+    para: read_list, the fastq file names in a python list
+    para: prefix, the prefix for the output bam file
+    para: core, the cores used for mapping and sorting
+
+    return: None
+    """
+    prefix=read_list[0].split("_")[0] if prefix=="defualt" else prefix
+    read_str=" ".join(read_list)
+
+    myexe("bwa mem -t {core} {index} {read_str} > {prefix}.sam".format(core=core, index=index, read_str=read_str,prefix=prefix))
+    myexe("samtools view -bS {prefix}.sam >{prefix}.bam".format(prefix=prefix))
+    myexe("samtools sort -@ {core} {prefix}.bam {prefix}_s".format(core=core,prefix=prefix))
+    myexe("samtools index {prefix}_s.bam".format(prefix=prefix))
+    myexe("rm {prefix}.sam {prefix}.bam".format(prefix=prefix))
+
+    print "++++++++done++++++++++"
+
+
+def wrapper_bam2vcf(ref, bamfile, prefix="defulat"):
+    """
+    para: ref, the reference fasta file
+    para: bamfile: a single sorted bam file
+    para: prefix, the prefix for the output vcf file
+
+    return: None
+    """
+    prefix=bamfile.split(".")[0].split("_")[0] if prefix=="defualt" else prefix
+    cmd_mpileup=("samtools mpileup -ugf {ref} {bam} | bcftools call -vmO z -o {prefix}.bcf"
+                 .format(ref=ref,bam=bamfile,prefix=prefix))
+    cmd_tovcf=("bcftools view {prefix}.bcf>{prefix}.vcf".
+               format(prefix=prefix))
+
+    #print cmd_mpileup
+    myexe(cmd_mpileup)
+    myexe(cmd_tovcf)
+    print "++++++++done++++++++++"
+
+
+
+def __bwa_index(ref):
     myexe("bwa index %s" % ref)
 
-def bwa_mem(ref, reads, core=15):
+def __bwa_mem(ref, reads, core=15):
     '''
     :param core: the core used to run bwa mem
     :param ref: the full path or relative path to the ref file, need to be in fasta format
