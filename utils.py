@@ -1,5 +1,10 @@
 # filename: utils.py
-# prepare some functions that can be used globally, such as read the reference to the memory, read the fastq file to dict
+
+"""
+# some functions which can be used globally,
+# such as read the reference to the memory, read the fastq file to dict
+"""
+
 import subprocess
 import signal  # only used for the exe function
 import time
@@ -8,7 +13,6 @@ from functools import wraps
 import os
 
 # The sequence operation functions--------------------------------------------------------------------------------------
-from Bio import SeqIO
 from Bio import SeqIO
 import gzip
 
@@ -167,7 +171,7 @@ def wrapper_bwamem(index, read_list, prefix="defualt", core=32):
     myexe("samtools index {prefix}_s.bam".format(prefix=prefix))
     myexe("rm {prefix}.sam {prefix}.bam".format(prefix=prefix))
 
-    print "++++++++done++++++++++"
+    print "++++++++done with mapping++++++++++"
 
 
 def wrapper_bam2vcf(ref, bamfile, prefix="defulat"):
@@ -187,7 +191,7 @@ def wrapper_bam2vcf(ref, bamfile, prefix="defulat"):
     #print cmd_mpileup
     myexe(cmd_mpileup)
     myexe(cmd_tovcf)
-    print "++++++++done++++++++++"
+    print "++++++++done with VCF calling++++++++++"
 
 
 

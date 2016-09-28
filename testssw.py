@@ -20,4 +20,4 @@ aln=aligner.align(seq2)
 print aln.score,aln.ref_begin,aln.ref_end,aln.query_begin,aln.query_end,aln.cigar_string
 
 # here is a wrapper
-from ssw.ssw_wrap import Aligner
+# from ssw.ssw_wrap import Aligner

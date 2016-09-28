@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" showExcludedInSync="true">
+  <component name="PublishConfigData" autoUpload="Always" serverName="b920" showNewOnSourceInSync="false">
     <serverData>
-      <paths name="leftmachine">
+      <paths name="b920">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/li/app/LR_toolkit" local="$PROJECT_DIR$" web="/home/li/LR_toolkit" />
-            <mapping deploy="/home/li/app/longscaffold" local="E:/PycharmProjects/longscaffold" />
-            <mapping deploy="/home/li/app/snp-fasta" local="$PROJECT_DIR$/../snp-fasta" />
+            <mapping deploy="/LR_toolkit" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

@@ -1,5 +1,6 @@
 #filename: cons.py
-#Given a consesune matrix, get the cons from the sequence, used to find the replacement of the gapped "N"s
+# Given a consesune matrix, get the cons from the sequence,
+# used to find the replacement of the gapped "N"s
 
 # to get per base coverage at a place
 # the str of the pileup function
@@ -7,8 +8,7 @@
 # Classname: AlignmentFile.pileup==pileupcolumn; AlignmentFile.pileup.pileups==pileupread
 # Note: the N_list do not include the end of the gap region, so is needed to be expanded
 
-# todo: change the marix tp pandas or nympy object and speed it up
-# todo: can add a function to convert the
+# todo: change the matrix to pandas or numpy object and speed it up
 
 import pysam
 
