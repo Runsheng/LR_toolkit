@@ -115,6 +115,7 @@ def reverse_complement(seq):
 
 # The system operation functions----------------------------------------------------------------------------------------
 
+
 def myexe(cmd, timeout=0):
     """
     a simple wrap of the shell
@@ -128,7 +129,7 @@ def myexe(cmd, timeout=0):
         sys.exit(1)
 
     proc=subprocess.Popen(cmd, shell=True, preexec_fn=setupAlarm,
-                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,cwd=os.getcwd())
     out, err=proc.communicate()
     print err
     return out, err, proc.returncode
@@ -149,82 +150,11 @@ def timer(fn):
         print "    time = %.6f sec" % (te-ts)
         return result
     return wrapper
+
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
-
-def wrapper_bwamem(index, read_list, prefix="defualt", core=32):
-    """
-    general wrapper for bwa mem to be used in python cmd line
-    para: index, the bwa index of reference fasta file
-    para: read_list, the fastq file names in a python list
-    para: prefix, the prefix for the output bam file
-    para: core, the cores used for mapping and sorting
-
-    return: None
-    """
-    prefix=read_list[0].split("_")[0] if prefix=="defualt" else prefix
-    read_str=" ".join(read_list)
-
-    myexe("bwa mem -t {core} {index} {read_str} > {prefix}.sam".format(core=core, index=index, read_str=read_str,prefix=prefix))
-    myexe("samtools view -bS {prefix}.sam >{prefix}.bam".format(prefix=prefix))
-    myexe("samtools sort -@ {core} {prefix}.bam {prefix}_s".format(core=core,prefix=prefix))
-    myexe("samtools index {prefix}_s.bam".format(prefix=prefix))
-    myexe("rm {prefix}.sam {prefix}.bam".format(prefix=prefix))
-
-    print "++++++++done with mapping++++++++++"
-
-
-def wrapper_bam2vcf(ref, bamfile, prefix="defulat"):
-    """
-    para: ref, the reference fasta file
-    para: bamfile: a single sorted bam file
-    para: prefix, the prefix for the output vcf file
-
-    return: None
-    """
-    prefix=bamfile.split(".")[0].split("_")[0] if prefix=="defualt" else prefix
-    cmd_mpileup=("samtools mpileup -ugf {ref} {bam} | bcftools call -vmO z -o {prefix}.bcf"
-                 .format(ref=ref,bam=bamfile,prefix=prefix))
-    cmd_tovcf=("bcftools view {prefix}.bcf>{prefix}.vcf".
-               format(prefix=prefix))
-
-    #print cmd_mpileup
-    myexe(cmd_mpileup)
-    myexe(cmd_tovcf)
-    print "++++++++done with VCF calling++++++++++"
-
-
-
-def __bwa_index(ref):
-    myexe("bwa index %s" % ref)
-
-def __bwa_mem(ref, reads, core=15):
-    '''
-    :param core: the core used to run bwa mem
-    :param ref: the full path or relative path to the ref file, need to be in fasta format
-    :param reads: the full path or relative path to the read file, need to be in fastq format
-    :return: None? or sth?
-    '''
-    assert ref.split(".")[-1] in ["fa","fasta"], "Check your reference type, and make them end with .fa or .fasta"
-    assert reads.split(".")[-1] in ["fq","fastq"], "Check your reads type, and make them end with .fq or .fastq"
-
-    ref_short=ref.split("/")[-1].split(".")[0]
-    reads_short=reads.split("/")[-1].split(".")[0]
-    reads_short_s=reads_short+"s"
-
-    # index
-    myexe("bwa index %s" % ref)
-    # bwa to bam file
-    print myexe("bwa mem -t {core} {refpath} {readpath} | samtools view -bS - |samtools sort - {reads_short_s}."
-          .format(core=core, readpath=reads, refpath=ref, reads_short_s=reads_short_s))
-    # sort bam file
-    # myexe("samtools sort {reads_short}.bam {reads_short_s}".
-    #      format(reads_short=reads_short,reads_short_s=reads_short_s))
-    # index bam file
-    myexe("samtools index {reads_short_s}.bam".
-          format(reads_short_s=reads_short_s))
-    # clean up
-    #print myexe("rm {reads_short}.bam".format(reads_short=reads_short))
 
 
 

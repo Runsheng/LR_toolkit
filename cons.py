@@ -91,6 +91,7 @@ def con_matrix(cons_list):
 
     return (DEL,A,C,G,T)
 
+
 def cons(DEL,A,C,G,T):
     """
     Given: five list contains the DEL,A,C,G,T frenqency
@@ -113,6 +114,7 @@ def cons(DEL,A,C,G,T):
                 #if count>1:
                     #print "Dupilicated best!"
     return "".join(cons_string)
+
 
 def write_nreplace():
     # main code

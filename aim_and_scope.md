@@ -11,4 +11,8 @@
     - gff file and summary of the fixed region
         - The gff should include the newly added region
         - the intersection between the added sequence and raw gff file need to be generated
-        - maybe a chain file could be useful 
+        - maybe a chain file could be useful
+
+###The flow for the pipeline is:
+
+- Summary_N, get all the Nsite, store as a file, pass to cons  

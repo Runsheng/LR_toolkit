@@ -42,7 +42,7 @@ def summary_N(record_dict, N_threshold=5):
         else:
             print "left", len(left), "unequal to", "right", len(right)
     # store the N_list as pickle file:
-    with open("./4st_split_segment/N_list.dat", "wb") as fp:
+    with open("N_list.dat", "wb") as fp:
         pickle.dump(N_list, fp)
     return N_list
 

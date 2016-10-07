@@ -7,6 +7,9 @@
           <mappings>
             <mapping deploy="/LR_toolkit" local="$PROJECT_DIR$" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath path="test" />
+          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>

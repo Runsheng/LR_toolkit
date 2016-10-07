@@ -6,6 +6,7 @@
 # insert new strings into old strings, make a list to store the number of the sequence 
 from utils import fasta2dic
 
+
 def read_insertion(filename):
     """
     :param filename is the bed file name for the insertion, as "chr\tstart\tend\tsequence\n"
