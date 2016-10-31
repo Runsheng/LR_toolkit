@@ -10,6 +10,7 @@ import signal  # only used for the exe function
 import time
 from functools import wraps
 
+import fnmatch
 import os
 
 # The sequence operation functions--------------------------------------------------------------------------------------
@@ -56,20 +57,26 @@ def dic2dic(record_dict):
     return seq_dict
 
 
-def chr_select(seq_dict, chro, start,end):
+def chr_select(record_dict, chro, start,end):
     """
     Note the start and end is 0 based
     give the name of refdic, and the chr, start and end to be used
-    return the name and sequence
+    return the name and sequence (both as str)
     for example, chrcut(record_dict, "I", 100,109) returns
      ("I:100_109","AAAAAAAAAA")
     """
     name=chro+ ":"+str(start)+"_"+str(end)
-    seq=str(seq_dict[chro][start:end].seq)
+    seq=str(record_dict[chro][start:end].seq)
     return name,seq
 
 
 def dic2fasta(record_dict,out="record_dict.fasta"):
+    """
+    Write a record_dict of fatsa file back to fasta file
+    :param record_dict:
+    :param out:
+    :return:
+    """
     with open(out,"w") as f:
         for record in record_dict.keys():
             name=record
@@ -79,6 +86,7 @@ def dic2fasta(record_dict,out="record_dict.fasta"):
             f.write("\n")
             f.write(seq)
             f.write("\n")
+
 
 def max_get(listname):
     """
@@ -114,6 +122,17 @@ def reverse_complement(seq):
 # ----------------------------------------------------------------------------------------------------------------------
 
 # The system operation functions----------------------------------------------------------------------------------------
+
+
+def myglob(seqdir, word):
+    """
+     to write a glob for python2 for res-glob
+    """
+    matches=[]
+    for root, dirnames, filenames in os.walk(seqdir):
+         for filename in fnmatch.filter(filenames, word):
+            matches.append(os.path.join(root, filename))
+    return matches
 
 
 def myexe(cmd, timeout=0):

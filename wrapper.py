@@ -6,6 +6,7 @@
 
 from utils import myexe
 from logger import log_summary
+from functools import wraps
 
 logger=log_summary()
 
@@ -38,7 +39,8 @@ def wrapper_bwamem(index, read_list, prefix="default", core=32):
     prefix=read_list[0].split("_")[0] if prefix=="default" else prefix
     read_str=" ".join(read_list)
     print myexe("pwd")
-    myexe("bwa mem -t {core} {index} {read_str} > {prefix}.sam".format(core=core, index=index, read_str=read_str,prefix=prefix))
+    myexe("bwa mem -t {core} -w 15000 -k 50 {index} {read_str} > {prefix}.sam".format(core=core,
+                                                                                      index=index, read_str=read_str,prefix=prefix))
     myexe("samtools view -bS {prefix}.sam >{prefix}.bam".format(prefix=prefix))
     myexe("samtools sort -@ {core} {prefix}.bam -o {prefix}_s.bam".format(core=core,prefix=prefix)) # only valid for samtools >1.2
     myexe("samtools index {prefix}_s.bam".format(prefix=prefix))

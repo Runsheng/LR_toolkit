@@ -2,17 +2,22 @@
 # restore the database
 # post-assembly function
 """
+# unused
 From the pickle file ,restore the N_list
 
 for a position of N_list, get the reads overlap the region, with =-10 flanking region
-
 and check the Ns within a length range,
+
 give the position and the reads that can possibly overlapped the region
-take the reads from the fatsq file and prepare them to a simple assembler, so the gap can be filled
+take the reads from the fastq file and prepare them to a simple assembler, so the gap can be filled
 """
-import cPickle as pickle
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+# third part import
 import pysam
-from utils import fasta2dic
 
 # unused function
 def get_readname(samfile_name, chr, start,end):
@@ -25,12 +30,13 @@ def get_readname(samfile_name, chr, start,end):
     """
     read_names=[]
     with pysam.AlignmentFile(samfile_name) as samfile:
-        for read in samfile.fetch(chr,start-10,end+10):
+        for read in samfile.fetch(chr,start-10,end+10): # only use the reads overlapped in 10 nt
             read_names.append(read.query_name)
     return read_names
 
+
 # unused function
-def write_fasta(read_names, read_dic, out="support_read.fasta"):
+def _write_fasta(read_names, read_dic, out="support_read.fasta"):
     """
     The function to write selected reads into fasta file
     input: a list containing all the read names to be written,
@@ -48,7 +54,7 @@ def write_fasta(read_names, read_dic, out="support_read.fasta"):
             f.write("\n")
 
 # post-run function
-def main():
+def test():
     with open("./4st_split_segment/N_list.dat","rb") as fp:
         N_list = pickle.load(fp)
         for i in range(1000,2000):
@@ -62,4 +68,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    test()

@@ -12,15 +12,15 @@
 
 import pysam
 
-def con_sequence(samfile,chro,start,end):
+def con_sequence(samfile,chro,start,end,flanking=5):
     """
-    Input: the opened pysam.Alignmentfile, and a bed interval
+    Input: the opened pysam.Alignmentfile, and a bed-like interval
     Out: get the read matrix in a dict
     """
     cons_list={}
     n=0
     #take 5 mer 5' and 3' flanking sequence together with N as the input
-    for pileupcolumn in samfile.pileup(chro,start-5,end+5, truncate=True):
+    for pileupcolumn in samfile.pileup(chro,start-flanking,end+flanking, truncate=True):
 
         site_seq=""  # to avoid some UnboundLocalError in python 2.7, give an init value firstly
 
@@ -116,13 +116,17 @@ def cons(DEL,A,C,G,T):
     return "".join(cons_string)
 
 
-def write_nreplace():
+def write_nreplace(samfile, N_list, outfile):
+    """
+    :param samfile:
+    :param N_list:
+    :param outfile:
+    :return:
+    """
     # main code
-    with open("N_text.txt","w") as f:
+    with open(outfile,"w") as f:
         for N_single in N_list:
-            #print N_single
-            chro, start,end =N_single
-
+            chro,start,end=N_single
             matrix=con_matrix(con_sequence(samfile, chro,start,end+1))
             DEL,A,C,G,T=matrix
             sequence=cons(DEL,A,C,G,T)
@@ -135,6 +139,7 @@ def write_nreplace():
             f.write("\t")
             f.write(sequence)
             f.write("\n")
+
 
 if __name__=="__main__":
     samfile = pysam.AlignmentFile("cb12i_s.bam", "rb")

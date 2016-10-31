@@ -15,4 +15,11 @@
 
 ###The flow for the pipeline is:
 
-- Summary_N, get all the Nsite, store as a file, pass to cons  
+##### At this step, only pysam is used
+- 1. Summary_N, get all the Nsite, store as a list, pickle dump as a file, N.dat, 
+- 2. cons, using the mapped bam, scan the N region, get new cons of these region, 
+- 3. fillN, fill the N with the cons, 
+- 4. Summary_N of newly filled genome, to get a N_list again, 
+        compare the N_list with the former one, 
+        - if identical (or almost identical, for example, change <1000 bp), stop
+        - if not, repeat 1-4
