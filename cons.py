@@ -11,6 +11,7 @@
 # todo: change the matrix to pandas or numpy object and speed it up
 
 import pysam
+from utils import chr_select
 
 def con_sequence(samfile,chro,start,end,flanking=5):
     """
@@ -116,22 +117,25 @@ def cons(DEL,A,C,G,T):
     return "".join(cons_string)
 
 
-def write_nreplace(samfile, N_list, outfile):
+def write_nreplace(record_dict, samfile_dir, N_list, outfile, flanking=10):
     """
     :param samfile:
     :param N_list:
     :param outfile:
+    :param flanking:
     :return:
     """
     # main code
+    samfile=pysam.AlignmentFile(samfile_dir, "rb")
+
     with open(outfile,"w") as f:
         for N_single in N_list:
             chro,start,end=N_single
-            matrix=con_matrix(con_sequence(samfile, chro,start,end+1))
+            matrix=con_matrix(con_sequence(samfile, chro,start,end+1,flanking=flanking))
             DEL,A,C,G,T=matrix
             sequence=cons(DEL,A,C,G,T)
 
-            name,seq_raw=chr_select(record_dict, chro,start-5,end+1+5)
+            name,seq_raw=chr_select(record_dict, chro,start-flanking,end+1+flanking)
 
             f.write(name)
             f.write("\t")

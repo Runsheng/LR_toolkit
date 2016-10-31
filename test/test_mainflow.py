@@ -23,6 +23,9 @@ from utils import myglob
 # only used in run_nreplace
 from summary_N import summary_N
 from utils import fasta2dic
+from cons import write_nreplace
+
+from sequence_replace import read_nreplace,sequence_replace
 
 
 # debug functions
@@ -69,8 +72,9 @@ def pre_dir():
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-
-def run_mapper(index,read_list):
+@show_runcmd
+@timer
+def run_mapper(index,read_list,i):
 
     # set the env for the run
     root_dir=os.path.join(os.path.dirname(__file__))
@@ -92,8 +96,10 @@ def run_mapper(index,read_list):
 
 @show_runcmd
 @timer
-def run_nreplace():
+def run_nreplace(i):
     """
+    i is the loop time for the genome
+
     input is the ref fasta file location
 
     need to used 3 file:
@@ -108,28 +114,21 @@ def run_nreplace():
     ref_dir=os.path.join(root_dir, "wkdir/temp/ref")
     ref=myglob(ref_dir, "*.fa")[0]
 
+    os.chdir(work_dir)
     # summary N
     record_dict=fasta2dic(ref)
     N_round1=summary_N(record_dict)
 
+    samfile_dir=work_dir+"/temp/round{}_s.bam".format(i)
     # get N_replace.txt
+    #write_nreplace(record_dict= record_dict, samfile_dir=samfile_dir, N_list=N_round1, outfile=work_dir+"/N_round1.txt")
 
-
-    samfile = pysam.AlignmentFile("cb12i_s.bam", "rb")
-    # test code
-    #N_list_new=N_list[264:265]
-    #for N_single in N_list_new:
-    #    print N_single
-    #    chro, start,end =N_single
-    #    aa=con_sequence(samfile, chro,start,end+1)
-    #    bb=con_matrix(aa)
-    #    DEL,A,C,G,T=bb
-    #    sequence=cons(DEL,A,C,G,T)
-    #    print sequence
-    ## main code
-    #write_nreplace()
-
-
+    N_replace= read_nreplace(work_dir+"/N_round{}.txt".format(i), flanking=10)
+    if len(N_replace)<=5:
+        return -1
+    else:
+        sequence_replace(record_dict=record_dict, N_replace=N_replace, outfile="round1_nfill.fasta")
+        return i+1
 
 if __name__=="__main__":
     #pre_dir()
@@ -138,7 +137,6 @@ if __name__=="__main__":
     read_list = glob.glob(prefix + "/*.fq") # only used for the test
     print(read_list)
 
-
     # run_mapper_caller(index,read_list)
-    run_nreplace()
+    run_nreplace(i=1)
 
