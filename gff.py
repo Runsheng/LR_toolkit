@@ -116,7 +116,7 @@ class GFF(object):
         :return: A dict, {name1:GFF, name2:GFF}, name use the raw seqID and the
         """
         for record_one in self.gff_records:
-            if
+            pass
 
     def join(self, nextgff):
         # todo: make this used as a suffix

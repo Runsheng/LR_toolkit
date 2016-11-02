@@ -3,7 +3,13 @@
 # the fasta file is the reference sequence to be filled
 # require Biopython:SeqIO to parse the fasta file
 # runsheng 2014/12/15
-# insert new strings into old strings, make a list to store the number of the sequence 
+# insert new strings into old strings, make a list to store the number of the sequence
+
+# third part package import
+import vcf
+
+
+
 from utils import fasta2dic
 
 

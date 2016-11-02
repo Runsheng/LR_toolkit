@@ -129,6 +129,17 @@ def run_nreplace(i, work_dir):
         return i+1
 
 
+def run_insertion(i, workdir):
+    """
+    find the insertions in the long reads, fill them into the genome, several times
+    :param i:
+    :param workdir:
+    :return:
+    """
+    ref_dir = os.path.join(work_dir, "temp/ref")
+
+
+
 def clearup(work_dir):
     """
     remove the files in temp file and renew the folder
