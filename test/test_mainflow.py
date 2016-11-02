@@ -25,7 +25,7 @@ from summary_N import summary_N
 from utils import fasta2dic
 from cons import write_nreplace
 
-from sequence_replace import read_nreplace,sequence_replace
+from sequence_replace import read_nreplace,sequence_replace, write_nreplace_used
 
 
 # debug and profiling functions
@@ -49,15 +49,13 @@ def pre_dir_file(i,work_dir,ref_file=None):
         print("Already have the dirs.")
         pass
     else:
-        os.makedirs(work_dir)
-        os.makedirs(tmp_dir)
         os.makedirs(tmp_ref_dir)
 
     if i==0:
         if ref_file==None:
             raise IOError("A ref file have to be provided in the first round.")
-
-            shutil.copyfile( ref_file, (tmp_ref_dir+"/round{}".format(i)) )
+        else:
+            shutil.copyfile( ref_file, (tmp_ref_dir+"/round{}.fasta".format(i)) )
     else:
         ref_last=glob((work_dir+"/*.fasta"))[-1]
         shutil.copy(ref_last, tmp_ref_dir)
@@ -86,7 +84,7 @@ def run_mapper(i,work_dir,read_list):
     os.chdir(work_dir+"/temp")
     ## make the mapping with a large -w (to get the ungapped N) and -t (speed up)
     ## as my expreience, using a long seed and a long width will help the indel calling
-    wrapper_bwamem(ref_file,read_list,prefix="round{}".format(i), w=25000, k=22)
+    wrapper_bwamem(ref_file,read_list,prefix="round{}".format(i),core=32, w=25000, k=22)
     print(os.listdir("."))
 # ----------------------------------------------------------------------------------------------------------------------
 # Just test the new bam mapping data and the old
@@ -121,7 +119,8 @@ def run_nreplace(i, work_dir):
                    N_list=N_roundi, outfile=work_dir+"/N_round{}.txt".format(i),flanking=5)
     # read the file to mem
     N_replace= read_nreplace(work_dir+"/N_round{}.txt".format(i), flanking=5)
-    print(len(N_replace))
+
+    write_nreplace_used(N_replace, outfile=work_dir+"/N_round{}_used.txt".format(i))
 
     if len(N_replace)<=5:
         return -1
@@ -132,22 +131,25 @@ def run_nreplace(i, work_dir):
 
 def clearup(work_dir):
     """
-    remove the
+    remove the files in temp file and renew the folder
     :param work_dir:
     :return:
     """
+
 
 def run_main(i=2):
     i_p=i-1
 
 
-
 if __name__=="__main__":
+
     work_dir="/home/zhaolab1/myapp/LR_toolkit/test/wkdir"
     read_list=["/home/zhaolab1/myapp/LR_toolkit/test/cb12.fq"]
+    #n = run_nreplace(0, work_dir=work_dir)
 
-    pre_dir_file(7,work_dir=work_dir)
-    run_mapper(7, work_dir,read_list )
-    n=run_nreplace(i=7, work_dir=work_dir)
-    print(n)
+    for i in range(1,7):
+        pre_dir_file(i,work_dir)
+        run_mapper(i, work_dir,read_list )
+        n=run_nreplace(i, work_dir=work_dir)
+        print(n)
 

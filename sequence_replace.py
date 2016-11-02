@@ -43,6 +43,7 @@ def read_nreplace(n_text_filename, flanking=5):
     N_replace=[]
     n_1=0
     len_1=0
+    len_l_new=0
 
     for line in f.readlines():
         name,seq_raw,seq_new = parse_nline(line)
@@ -55,6 +56,7 @@ def read_nreplace(n_text_filename, flanking=5):
             # some status
             n_1+=1
             len_1+=len(seq_raw)
+            len_l_new+=len(seq_new.replace("-", ""))
 
             chro,start,end=parse_nname(name)
             N_single=(chro, start, end, seq_raw, seq_new)
@@ -71,14 +73,37 @@ def read_nreplace(n_text_filename, flanking=5):
 
         # 3. "Single extended" or "single breakpoint"
             # ignored at this time
+
+
+
+
     # todo: change to logger
     print("In total, %d gaps with %d bps were recorded to be filled." % (n_1,len_1))
-
+    print("The sequences after fill will be %d long" % len_l_new)
     f.close()
     return N_replace
 
-# filename: sequence_replace.py / same as previous
-# runsheng, 2015/04/09:
+
+def write_nreplace_used(N_replace, outfile):
+    """
+    write a small list for used N_replace file in this round's fix
+    :param N_replace:
+    :return: generate a file
+    """
+    fw=open(outfile, "w")
+    for line in N_replace:
+        for i,item in enumerate(line):
+            if i==len(line)-1:
+                fw.write(item)
+                fw.write("\n")
+            else:
+                fw.write(item)
+                fw.write("\t")
+
+    fw.close()
+
+
+
 
 
 def sequence_replace(record_dict, N_replace, outfile="replaced.fasta" ):
@@ -127,7 +152,7 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta" ):
                     print("Unequal length of stored gap and actual gap position, check the reference sequence!")
 
             # common
-            if i!=0:
+            elif 0<i<(len(cutsite)-1):
                 i_start,i_end=cutsite[i-1]
                 i2_start,i2_end=cutsite[i]
 
@@ -144,7 +169,7 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta" ):
                 else:
                     print("Unequal length of stored gap and actual gap position, check the reference sequence!")
             # end
-            if i==len(cutsite)-1:
+            elif i==len(cutsite)-1:
                 i_start,i_end=cutsite[i]
                 seq_1=seq_chro[i_end:]
 
@@ -171,8 +196,8 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta" ):
 
 if __name__=="__main__":
     # test code
-    N_replace=read_nreplace(n_text_filename="N_text.txt")
-    print N_replace[2]
+    N_replace=read_nreplace(n_text_filename="/home/zhaolab1/myapp/LR_toolkit/test/wkdir/N_round0.txt")
+    #print N_replace[2]
 
     # main code
-    sequence_replace()
+    #sequence_replace()
