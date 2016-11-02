@@ -95,21 +95,24 @@ def con_matrix(cons_list):
 
 def cons(DEL,A,C,G,T):
     """
-    Given: five list contains the DEL,A,C,G,T frenqency
+    Given: five list contains the DEL,A,C,G,T frequency
     Return: the consensus string of the matrix
     """
     cons_string=[]
     for i in range(0,len(A)):
+
         col={"-":DEL[i],"A":A[i], "C":C[i], "G":G[i], "T":T[i]}
         #design model: search
         max_n=max(col.values())
         if max_n==0:  # avoid no coverage status
             pass
         else:
-            for key in col.keys():
+            # give the order considering the reliability of illumina long reads,
+            #  del should be last, cg is better than ta
+            for key in ["C", "G", "T", "A", "-"]:
                 if col[key]==max_n:
                     cons_string.append(key)
-                    #just take the first as best
+                    # just take the first as best
                     break
                     #count+=1
                 #if count>1:
@@ -117,7 +120,7 @@ def cons(DEL,A,C,G,T):
     return "".join(cons_string)
 
 
-def write_nreplace(record_dict, samfile_dir, N_list, outfile, flanking=10):
+def write_nreplace(record_dict, samfile_dir, N_list, outfile, flanking=5):
     """
     :param samfile:
     :param N_list:

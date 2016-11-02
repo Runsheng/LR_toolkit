@@ -38,9 +38,11 @@ def summary_N(record_dict, N_threshold=5):
                 length_N+=right[i]-left[i]+1
                 if right[i]-left[i]>=N_threshold:
                     count+=1
-            print "%s has %d gaps (len> %d bp), total gap length is %d (single N included)." %(chr,count,N_threshold,length_N)
+            # todo: change the print to logger
+            #print( "%s has %d gaps (len> %d bp), total gap length is %d (single N included)."
+            #       % (chr,count,N_threshold,length_N) )
         else:
-            print "left", len(left), "unequal to", "right", len(right)
+            print( "left", len(left), "unequal to", "right", len(right) )
     # store the N_list as pickle file, leave a checkpoint:
     # with open("N_list.dat", "wb") as fp:
         #pickle.dump(N_list, fp)

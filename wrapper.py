@@ -19,14 +19,14 @@ def show_runcmd(fn):
     """
     @wraps(fn)
     def wrapper(*args,**kwargs):
-        logger.info("RUNNING    "+str(*args))
+        logger.info("RUNNING    "+str(" ".join(*args)))
         results=fn(*args,**kwargs)
         return results
     return wrapper
 
 
 
-def wrapper_bwamem(index, read_list, prefix="default", core=32):
+def wrapper_bwamem(index, read_list, prefix="default", core=32, w=15000, k=50):
     """
     general wrapper for bwa mem to be used in python cmd line
     para: index, the bwa index of reference fasta file
@@ -39,7 +39,7 @@ def wrapper_bwamem(index, read_list, prefix="default", core=32):
     prefix=read_list[0].split("_")[0] if prefix=="default" else prefix
     read_str=" ".join(read_list)
     print myexe("pwd")
-    myexe("bwa mem -t {core} -w 15000 -k 50 {index} {read_str} > {prefix}.sam".format(core=core,
+    myexe("bwa mem -t {core} -w {w} -k {k} {index} {read_str} > {prefix}.sam".format(core=core, w=w, k=k,
                                                                                       index=index, read_str=read_str,prefix=prefix))
     myexe("samtools view -bS {prefix}.sam >{prefix}.bam".format(prefix=prefix))
     myexe("samtools sort -@ {core} {prefix}.bam -o {prefix}_s.bam".format(core=core,prefix=prefix)) # only valid for samtools >1.2
