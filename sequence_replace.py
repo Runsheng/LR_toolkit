@@ -62,7 +62,8 @@ def read_nreplace(n_text_filename, flanking=5):
             len_l_new+=len(seq_new.replace("-", ""))
 
             chro,start,end=parse_nname(name)
-            N_single=(chro, start, end, seq_raw, seq_new)
+            N_single=(chro, int(start)+flanking, int(end)-flanking,
+                      seq_raw[flanking:-flanking], seq_new[flanking:-flanking])
             N_replace.append(N_single)
             # some result to be known
 
@@ -77,10 +78,8 @@ def read_nreplace(n_text_filename, flanking=5):
         # 3. "Single extended" or "single breakpoint"
             # ignored at this time
 
-
-    # todo: change to logger
-    logger_f.debug("In total, %d gaps with %d bps were recorded to be filled." % (n_1, len_1))
-    logger_f.debug("The sequences after fill will be %d long" % len_l_new)
+    print("In total, %d gaps with %d bps were recorded to be filled." % (n_1, len_1))
+    print("The sequences after fill will be %d long" % len_l_new)
     f.close()
     return N_replace
 
@@ -172,7 +171,7 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta"):
                     else:
                         print("Unequal length of stored gap and actual gap position, check the reference sequence!")
                 # end
-                if i==len(cutsite)-1:
+                if i==len(cutsite)-1 and i!=0:
                     i_start,i_end=cutsite[i-1]
                     i2_start,i2_end=cutsite[i]
 
@@ -191,7 +190,19 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta"):
                     else:
                         print("Unequal length of stored gap and actual gap position, check the reference sequence!")
 
+                if i==len(cutsite)-1 and i==0:
+                    i2_start,i2_end=cutsite[i]
 
+                    seq_2_chro=seq_chro[i2_start:i2_end]
+                    seq_2_raw=subreplace[(i2_start,i2_end)][3]
+                    seq_2_new = subreplace[i2_start, i2_end][4]
+                    seq_3=seq_chro[i2_end:]
+
+
+                    if seq_2_chro == seq_2_raw:
+                        seq_chro_new.append(seq_3)
+                    else:
+                        print("Unequal length of stored gap and actual gap position, check the reference sequence!")
             # the deletions is still in "-", remove them
             seq_chro_new_str="".join(seq_chro_new).replace("-","")
 

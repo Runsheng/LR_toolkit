@@ -18,7 +18,7 @@ from utils import myexe
 from wrapper import wrapper_bwamem
 from wrapper import wrapper_bam2vcf
 from utils import myglob  # recursive glob for python 2
-from glob import glob # normal
+from glob import glob # normal glob
 
 # used in run_nreplace
 from summary_N import summary_N
@@ -156,11 +156,11 @@ if __name__=="__main__":
 
     work_dir="/home/zhaolab1/myapp/LR_toolkit/test/wkdir"
     read_list=["/home/zhaolab1/myapp/LR_toolkit/test/cb12.fq"]
-    #n = run_nreplace(0, work_dir=work_dir)
+    n = run_nreplace(0, work_dir=work_dir)
 
-    for i in range(1,7):
-        pre_dir_file(i,work_dir) # , ref_file="/home/zhaolab1/myapp/LR_toolkit/test/round0.fasta")
-        run_mapper(i, work_dir,read_list )
-        n=run_nreplace(i, work_dir=work_dir)
-        print(n)
+    #for i in range(0,7):
+    #    pre_dir_file(i,work_dir, ref_file="/home/zhaolab1/myapp/LR_toolkit/test/round0.fasta")
+    #    run_mapper(i, work_dir,read_list )
+    #    n=run_nreplace(i, work_dir=work_dir)
+    #    print(n)
 
