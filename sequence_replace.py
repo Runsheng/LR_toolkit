@@ -94,10 +94,10 @@ def write_nreplace_used(N_replace, outfile):
     for line in N_replace:
         for i,item in enumerate(line):
             if i==len(line)-1:
-                fw.write(item)
+                fw.write(str(item))
                 fw.write("\n")
             else:
-                fw.write(item)
+                fw.write(str(item))
                 fw.write("\t")
 
     fw.close()
