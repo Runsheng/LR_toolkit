@@ -9,13 +9,10 @@
 # ('I', '694217', '694228', 'GCTGGNCTATG', 'GCTGGTCTATG')==chr,start,end,seq_raw,seq_new, separated by \t
 
 # project-level import
-from logger import log_detail
-# todo: use logger to replace print in the read_nreplace and nreplace
 
 from utils import get_fasta_len
 from logger import log_detail_file
-logger=log_detail_file("log_replace.txt")
-
+logger_f=log_detail_file("log_replace.txt")
 
 
 def parse_nline(line):
@@ -82,8 +79,8 @@ def read_nreplace(n_text_filename, flanking=5):
 
 
     # todo: change to logger
-    logger.debug("In total, %d gaps with %d bps were recorded to be filled." % (n_1,len_1))
-    logger.debug("The sequences after fill will be %d long" % len_l_new)
+    logger_f.debug("In total, %d gaps with %d bps were recorded to be filled." % (n_1, len_1))
+    logger_f.debug("The sequences after fill will be %d long" % len_l_new)
     f.close()
     return N_replace
 
@@ -158,7 +155,7 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta"):
                         print("Unequal length of stored gap and actual gap position, check the reference sequence!")
 
                 # common
-                elif 0<i<(len(cutsite)-1):
+                if 0<i<(len(cutsite)-1):
                     i_start,i_end=cutsite[i-1]
                     i2_start,i2_end=cutsite[i]
 
@@ -175,7 +172,7 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta"):
                     else:
                         print("Unequal length of stored gap and actual gap position, check the reference sequence!")
                 # end
-                elif i==len(cutsite)-1:
+                if i==len(cutsite)-1:
                     i_start,i_end=cutsite[i-1]
                     i2_start,i2_end=cutsite[i]
 
@@ -183,6 +180,7 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta"):
 
                     seq_2_chro=seq_chro[i2_start:i2_end]
                     seq_2_raw=subreplace[(i2_start,i2_end)][3]
+                    seq_2_new = subreplace[i2_start, i2_end][4]
                     seq_3=seq_chro[i2_end:]
 
 
@@ -198,7 +196,7 @@ def sequence_replace(record_dict, N_replace, outfile="replaced.fasta"):
             seq_chro_new_str="".join(seq_chro_new).replace("-","")
 
         # todo: change to logger
-        logger.debug( "Length after fill: %d; length before fill: %d." % (len(seq_chro_new_str), len(seq_chro)) )
+        logger_f.debug("Length after fill: %d; length before fill: %d." % (len(seq_chro_new_str), len(seq_chro)))
 
         # write the sequence
         fw.write(">")
@@ -219,7 +217,6 @@ def check_post_replace(fasta_before, fasta_after, delta):
     if la==lb+delta:
         return True
     return False
-
 
 
 

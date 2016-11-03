@@ -8,8 +8,6 @@
 # third part package import
 import vcf
 
-
-
 from utils import fasta2dic
 
 
