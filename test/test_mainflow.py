@@ -158,8 +158,8 @@ if __name__=="__main__":
     read_list=["/home/zhaolab1/myapp/LR_toolkit/test/cb12.fq"]
     #n = run_nreplace(0, work_dir=work_dir)
 
-    for i in range(1,7):
-        pre_dir_file(i,work_dir)
+    for i in range(0,7):
+        pre_dir_file(i,work_dir, ref_file="/home/zhaolab1/myapp/LR_toolkit/test/round0.fasta")
         run_mapper(i, work_dir,read_list )
         n=run_nreplace(i, work_dir=work_dir)
         print(n)

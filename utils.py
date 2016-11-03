@@ -119,6 +119,22 @@ def reverse_complement(seq):
         reverse=''.join(reversed(complement))
     return reverse
 
+
+def get_fasta_len(fastafile):
+
+    total_len=0
+    if ".gz" in fastafile:
+        handle=gzip.open(fastafile, "rU")
+    else:
+        handle=open(fastafile, "rU")
+
+    for record in SeqIO.parse(handle, "fasta"):
+            total_len+=len(record)
+
+    return total_len
+
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 # The system operation functions----------------------------------------------------------------------------------------

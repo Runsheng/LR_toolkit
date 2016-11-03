@@ -25,14 +25,14 @@ def log_summary():
     return logger
 
 
-def log_detail():
+def log_detail_file(filename):
     """
     # define only the summary logger first
     """
     logger = logging.getLogger('details')
     logger.setLevel(logging.DEBUG)
 
-    ch = logging.StreamHandler()
+    ch = logging.FileHandler(filename=filename)
     ch.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
@@ -47,13 +47,14 @@ def test_summary():
     logger.info("In total %d line, %s" % (2, "just a test number"))
 
 
-def test_detail():
-    logger=log_detail()
+def test_detail_file():
+    logger=log_detail_file("test.txt")
     logger.debug("This is just a test, print number 100 as float"+","+str(float(1)*100))
     logger.debug("In total %d line, %s" % (2, "just a test number"))
 
 
 if __name__=="__main__":
-    test_detail()
+    import os
+    os.chdir("./test")
     test_summary()
-    test_detail()
+    test_detail_file()
