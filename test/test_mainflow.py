@@ -11,12 +11,10 @@ from __future__ import print_function
 import os
 import shutil
 import logging
-import glob
 
 # used in run_mapper
 from utils import myexe
 from wrapper import wrapper_bwamem
-from wrapper import wrapper_bam2vcf
 from utils import myglob  # recursive glob for python 2
 from glob import glob # normal glob
 
@@ -26,6 +24,10 @@ from utils import fasta2dic
 from cons import write_nreplace
 
 from sequence_replace import read_nreplace,sequence_replace, write_nreplace_used
+
+
+# utils to run the insertion
+from wrapper import wrapper_bam2vcf
 
 
 # debug and profiling functions
@@ -137,6 +139,9 @@ def run_insertion(i, workdir):
     :return:
     """
     ref_dir = os.path.join(work_dir, "temp/ref")
+    ref=myglob(ref_dir, "*.fasta")[-1] # the latest reference should have a "larger" name
+    os.chdir(work_dir)
+
 
 
 
@@ -158,9 +163,10 @@ if __name__=="__main__":
     read_list=["/home/zhaolab1/myapp/LR_toolkit/test/cb12.fq"]
     #n = run_nreplace(0, work_dir=work_dir)
 
-    for i in range(1,7):
+    for i in range(1,7): # can change to while <10 or something to set a end of filling
         pre_dir_file(i,work_dir, ref_file="/home/zhaolab1/myapp/LR_toolkit/test/round0.fasta")
         run_mapper(i, work_dir,read_list )
         n=run_nreplace(i, work_dir=work_dir)
         print(n)
+
 
