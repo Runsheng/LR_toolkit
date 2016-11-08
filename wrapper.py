@@ -47,13 +47,32 @@ def wrapper_bwamem(index, read_list, prefix="default", core=32, w=15000, k=50):
     myexe("rm {prefix}.sam {prefix}.bam".format(prefix=prefix))
 
 
-def wrapper_bam2vcf(ref, bamfile, prefix="default"):
+def wrapper_bam2vcf_single(ref, bamfile, region, prefix="default"):
     """
-    todo: need
-    print "++++++++done with mapping++++++++++"
-to add muti-thread support by split the genome into small fragments
+    get a single vcf caller wrapper that can easy be called using multiprocess
+    :param ref:
+    :param bamfile:
+    :param region:
+    :param prefix:
+    :return:
+    """
+    print(myexe("pwd"))
+    prefix=bamfile.split("/")[-1].split("_")[0] if prefix=="default" else prefix
+    print(prefix)
+    outname=prefix+"_"+region
+    cmd_mpileup=("samtools mpileup -r {region} -ugf {ref} {bam} | bcftools call -v -m -O v -o {prefix}.vcf"
+                 .format(region=region, ref=ref,bam=bamfile,prefix=outname))
+
+    logger.info("RUNNING  "+cmd_mpileup)
+    myexe(cmd_mpileup)
+    logger.info("++++++++done with VCF calling++++++++++")
+
+
+
+def __wrapper_bam2vcf(ref, bamfile, prefix="default", core=32):
+    """
     para: ref, the reference fasta file
-    para: bamfile: a single sorted bam file
+    para: bamfile: a single sorted bam file, with index
     para: prefix, the prefix for the output vcf file
 
     return: None

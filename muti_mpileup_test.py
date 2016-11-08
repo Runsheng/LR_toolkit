@@ -5,11 +5,10 @@
 # @File    : muti_mpileup_test.py
 
 from utils import myexe
-import vcf
+from multiprocessing import Pool
 
 from logger import log_summary
 logger=log_summary()
-
 
 def split_genome(ref_dict, interval=500000):
     """
@@ -36,13 +35,34 @@ def split_genome(ref_dict, interval=500000):
     return genome_pieces
 
 
-def _test_caller_single(wkdir, ref,bamfile,region):
+def wrapper_bam2vcf_single(ref, bamfile, region, prefix="default"):
+    """
+    get a single vcf caller wrapper that can easy be called using multiprocess
+    :param ref:
+    :param bamfile:
+    :param region:
+    :param prefix:
+    :return:
+    """
+    print(myexe("pwd"))
+    prefix=bamfile.split("/")[-1].split("_")[0] if prefix=="default" else prefix
+    print(prefix)
+    outname=prefix+"_"+region
+    cmd_mpileup=("samtools mpileup -r {region} -ugf {ref} {bam} | bcftools call -v -m -O v -o {prefix}.vcf"
+                 .format(region=region, ref=ref,bam=bamfile,prefix=outname))
+
+    logger.info("RUNNING  "+cmd_mpileup)
+    myexe(cmd_mpileup)
+    logger.info("++++++++done with VCF calling++++++++++")
+
+
+def test_caller_single(wkdir, ref,bamfile,region):
     pass
 
 
 def _parser_upper(strings):
     """
-    used only for the insertions call using a lower cased genome
+    used only for the insertions,
     the insertion will showed as UPPER in the record.ALT
     """
     upper_l=[]
@@ -63,72 +83,16 @@ def get_ins_region(vcf_file, len_cutoff=5):
     vcf_reader = vcf.Reader(open(vcf_file, 'r'))
     for record in vcf_reader:
         if record.var_subtype=="ins" and record.aaf[0]==1:  # choose only the homo insetion
-            alt_seq=str(record.ALT[0]).upper()
-            ref_seq=str(record.REF).upper()
-            insertion=alt_seq[len(ref_seq):]
+            alt_seq=record.ALT[0]
+            insertion=parser_upper(alt_seq)
 
-            #print alt_seq, ref_seq, insertion
             ins_len=len(insertion)
-            if ins_len>=len_cutoff:
+            if ins_len>=5:
                 ins_start=record.affected_start
                 name=record.CHROM+":"+str(ins_start)+"^"+str(ins_start+1)
                 bed_d[name]=insertion
     return bed_d
 
-
-def _read_insertion(filename):
-    """
-    Only used to read a bed-like insertion file and store it with position in key
-    used in debug using the other pipeline out of
-
-    :param filename is the bed file name for the insertion, as "chr\tstart\tend\tsequence\n"
-    :return a dict as {insertion:seq}, for example {"I:130^131":"AAATTTTCCC"}
-    """
-    d={}
-    file_open=open(filename)
-    lines=file_open.readlines()
-    for line in lines:
-        # store the name in the format of key:value
-        # {"I:130^131":"AAATTTTCCC"}
-        insertion=line.split("\t")[0]+":"+line.split("\t")[1]+"^"+line.split("\t")[2]
-        sequence=line.split("\t")[3].strip()
-        d[insertion]=sequence
-    file_open.close()
-    return d
-
-
-def write_insertion_used(ins_d, outfile):
-    with open(outfile, "w") as fw:
-        for k,v in ins_d.items():
-            chro=k.split(":")[0]
-            start = int(k.split(":")[1].split("^")[0])
-            end= start+1
-            line=[chro, str(start),str(end),v]
-            fw.write("\t".join(line))
-            fw.write("\n")
-
-
-def write_insertion_fasta(record_dict, insertion, outfile="inserted.fasta"):
-    f=open(outfile, "w")
-    for name in record_dict.keys():
-        subinsertion = {}  # note , a dict is not really needed, a list can do the job
-        for key in insertion.keys():
-            if name == key.split(":")[0]:
-                # use number as index, perform better in sorting
-                start_key = int(key.split(":")[1].split("^")[0])
-                subinsertion[start_key] = insertion[key]
-        keys_in_order = sorted(subinsertion.keys())
-        seq = list(str(record_dict[name].seq))
-        i = 0  # i count for how many insertions were added
-        for key in keys_in_order:
-            seq.insert((key - 1 + i), subinsertion[key])
-            i += 1
-        if i!=0:
-            logger.info("%d insertions are filled to %s" %(i, name))
-        f.write(">" + str(name) + "\n")
-        f.write("".join(seq))
-        f.write("\n")
-    f.close()
 
 
 if __name__=="__main__":
@@ -148,7 +112,7 @@ if __name__=="__main__":
 
     #######set up
     vcf_dir = os.path.join(wkdir, "temp/vcf")
-    #os.makedirs(vcf_dir)
+    os.makedirs(vcf_dir)
     os.chdir(vcf_dir)
 
 
@@ -164,9 +128,7 @@ if __name__=="__main__":
     from glob import glob
     vcf_files=glob("*.vcf")
     import vcf
-    ins_all={}
     for vcf_one in vcf_files:
-        ins_one=get_ins_region(vcf_one, len_cutoff=5)
-        ins_all.update(ins_one)
-    write_insertion_used(ins_all, "ins_round8.txt")
-    write_insertion_fasta(ref_dict,ins_all,"round8_inserted.fasta")
+        vcf_reader=vcf.Reader(open(vcf_one), "r")
+
+

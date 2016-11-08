@@ -6,7 +6,7 @@
 from collections import OrderedDict
 # Third part library packages
 import pysam
-
+from utils import fasta2dic, max_get, chr_select
 
 def parse_bps(filename):
     """
@@ -22,7 +22,7 @@ def parse_bps(filename):
 
     Input: the output of breakpoints parsed by CLC genomic workbench 8.0 as txt file, file was sorted(as bed)
     Output: a list contains "chro,start,end,seq,l_or_r,length,is_mapped_to_self,percentage"
-    Note the bp position is 1 based
+    Note: the bp position is 1 based
     """
     fr=open(filename,"r")
     bp_list=[]
