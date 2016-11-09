@@ -79,7 +79,7 @@ def dic2fasta(record_dict,out="record_dict.fasta"):
     :return:
     """
     with open(out,"w") as f:
-        for record in record_dict.keys():
+        for record in sorted(record_dict.keys()):
             name=record
             seq=record_dict[name]
             f.write(">")

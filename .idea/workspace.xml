@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="575e7f70-7a4c-4e15-b9f8-6b0445de42f6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/muti_mpileup_test.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bps.py" afterPath="$PROJECT_DIR$/bps.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sequence_insert.py" afterPath="$PROJECT_DIR$/sequence_insert.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_mainflow.py" afterPath="$PROJECT_DIR$/test/test_mainflow.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utils.py" afterPath="$PROJECT_DIR$/utils.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wrapper.py" afterPath="$PROJECT_DIR$/wrapper.py" />
     </list>
     <ignored path="LR_toolkit.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -21,7 +18,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/LR_toolkit$test_mainflow.coverage" NAME="test_mainflow Coverage Results" MODIFIED="1478591013388" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/LR_toolkit$test_mainflow.coverage" NAME="test_mainflow Coverage Results" MODIFIED="1478680561974" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LR_toolkit$logger.coverage" NAME="logger Coverage Results" MODIFIED="1478144520273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/LR_toolkit$testssw.coverage" NAME="testssw Coverage Results" MODIFIED="1474966285671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/LR_toolkit$utils.coverage" NAME="utils Coverage Results" MODIFIED="1475031879923" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -40,9 +37,11 @@
       <file leaf-file-name="test_mainflow.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/test_mainflow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-              <folding />
+            <state relative-caret-position="379">
+              <caret line="213" column="13" selection-start-line="213" selection-start-column="13" selection-end-line="213" selection-end-column="13" />
+              <folding>
+                <element signature="e#208#245#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -72,8 +71,8 @@
       <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
+            <state relative-caret-position="450">
+              <caret line="81" column="47" selection-start-line="81" selection-start-column="47" selection-end-line="81" selection-end-column="47" />
               <folding>
                 <element signature="e#148#165#0" expanded="true" />
               </folding>
@@ -84,10 +83,10 @@
       <file leaf-file-name="sequence_insert.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sequence_insert.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="855">
-              <caret line="60" column="6" selection-start-line="60" selection-start-column="6" selection-end-line="60" selection-end-column="6" />
+            <state relative-caret-position="435">
+              <caret line="142" column="64" selection-start-line="142" selection-start-column="64" selection-end-line="142" selection-end-column="64" />
               <folding>
-                <element signature="e#132#155#0" expanded="true" />
+                <element signature="e#132#166#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -96,7 +95,7 @@
       <file leaf-file-name="wrapper.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wrapper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="840">
+            <state relative-caret-position="255">
               <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
               <folding />
             </state>
@@ -136,9 +135,9 @@
         <option value="$PROJECT_DIR$/sequence_replace.py" />
         <option value="$PROJECT_DIR$/muti_mpileup_test.py" />
         <option value="$PROJECT_DIR$/wrapper.py" />
+        <option value="$PROJECT_DIR$/bps.py" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/sequence_insert.py" />
-        <option value="$PROJECT_DIR$/bps.py" />
         <option value="$PROJECT_DIR$/test/test_mainflow.py" />
       </list>
     </option>
@@ -744,11 +743,18 @@
       <option name="project" value="LOCAL" />
       <updated>1478338404355</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="test 1-9, &#10;change i to xi,&#10;add parmap to use map inside function">
+      <created>1478602406582</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1478602406582</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="25" width="1922" height="1056" extended-state="0" />
+    <frame x="-1" y="25" width="1922" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -758,7 +764,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2148071" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32776618" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26510417" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26510417" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0984375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -819,7 +825,8 @@
     <MESSAGE value="fix replace bug of not adding the last or the first part of sequence" />
     <MESSAGE value="test 1-7" />
     <MESSAGE value="test 1-8" />
-    <option name="LAST_COMMIT_MESSAGE" value="test 1-8" />
+    <MESSAGE value="test 1-9, &#10;change i to xi,&#10;add parmap to use map inside function" />
+    <option name="LAST_COMMIT_MESSAGE" value="test 1-9, &#10;change i to xi,&#10;add parmap to use map inside function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1109,41 +1116,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="79">
           <caret line="62" column="4" selection-start-line="62" selection-start-column="4" selection-end-line="62" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sequence_insert.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
-          <caret line="60" column="6" selection-start-line="60" selection-start-column="6" selection-end-line="60" selection-end-column="6" />
           <folding>
-            <element signature="e#132#155#0" expanded="true" />
+            <element signature="e#132#155#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wrapper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
+        <state relative-caret-position="255">
           <caret line="58" column="22" selection-start-line="58" selection-start-column="22" selection-end-line="58" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="137" column="0" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
-          <folding>
-            <element signature="e#148#165#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/alignmap.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2490">
-          <caret line="166" column="29" selection-start-line="166" selection-start-column="29" selection-end-line="166" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -1158,11 +1140,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/alignmap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2490">
+          <caret line="166" column="29" selection-start-line="166" selection-start-column="29" selection-end-line="166" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="81" column="47" selection-start-line="81" selection-start-column="47" selection-end-line="81" selection-end-column="47" />
+          <folding>
+            <element signature="e#148#165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sequence_insert.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="142" column="64" selection-start-line="142" selection-start-column="64" selection-end-line="142" selection-end-column="64" />
+          <folding>
+            <element signature="e#132#166#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/test_mainflow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-          <folding />
+        <state relative-caret-position="379">
+          <caret line="213" column="13" selection-start-line="213" selection-start-column="13" selection-end-line="213" selection-end-column="13" />
+          <folding>
+            <element signature="e#208#245#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -28,7 +28,7 @@ from sequence_replace import read_nreplace,sequence_replace, write_nreplace_used
 
 # utils to run the insertion
 from sequence_insert import write_insertion_used,write_insertion_fasta,split_genome, \
-    get_ins_region
+    get_ins_region, get_ins_region_clc
 from wrapper import wrapper_bam2vcf_single
 from multiprocessing import Pool
 from utils import parmap
@@ -102,7 +102,7 @@ def run_mapper(i,work_dir,read_list):
     os.chdir(work_dir+"/temp")
     ## make the mapping with a large -w (to get the ungapped N) and -t (speed up)
     ## as my expreience, using a long seed and a long width will help the indel calling
-    wrapper_bwamem(ref_file,read_list,prefix="round{}".format(i),core=40, w=25000, k=20)
+    wrapper_bwamem(ref_file,read_list,prefix="round{}".format(i),core=32, w=25000, k=20)
     print(os.listdir("."))
 # ----------------------------------------------------------------------------------------------------------------------
 # Just test the new bam mapping data and the old
@@ -203,7 +203,29 @@ def run_insertion(i, work_dir):
         ins_all.update(ins_one)
 
     write_insertion_used(ins_all, "ins_round{}.txt".format(i))
-    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i[:-1]+str(int(-1)+1)))
+    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i[:-1]+str(int(i[-1])+1)))
+
+
+from sequence_insert import _read_insertion
+
+
+def run_clc_ins(i, work_dir, vcfone):
+    """
+    with given ins vcf in one file, run the insertion
+    :param i:
+    :param wkdir:
+    :param insfile:
+    :return:
+    """
+    ref_dir = os.path.join(work_dir, "temp/ref")
+    ref = myglob(ref_dir, "*.fasta")[-1]  # the latest reference should have a "larger" name
+    ref_dict=fasta2dic(ref)
+
+    os.chdir(work_dir)
+    ins_all= get_ins_region_clc(vcfone, len_cutoff=5)
+
+    write_insertion_used(ins_all, "ins_round{}.txt".format(i))
+    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i[:-1]+str(int(i[-1])+1)))
 
 
 
@@ -219,27 +241,33 @@ def run_main(i=2):
     i_p=i-1
 
 
+
+
 if __name__=="__main__":
 
     work_dir="/home/zhaolab1/myapp/LR_toolkit/test/wkdir"
-    read_list=["/home/zhaolab1/myapp/LR_toolkit/test/cb12.fq"]
+    read_list=["/home/zhaolab1/myapp/LR_toolkit/test/cb12s.fq"]
     # test code for the first round of N_replace
     #n = run_nreplace(0, work_dir=work_dir)
     # true run code for the replace, the validation for the repeat should be added separately
-    i=10
+    i=11
     i = get_xi(i)
-    n=run_nreplace(i, work_dir=work_dir)
+    run_clc_ins(i,work_dir,vcfone="roundx1_used.vcf")
 
+    i=get_xi(12)
+    pre_dir_file(i, work_dir)
+    run_mapper(i,work_dir,read_list)
+    run_nreplace(i, work_dir=work_dir)
 
-    for i in range(11,14): # can change to while <10 or something to set a end of filling
-        i=get_xi(i)
-        pre_dir_file(i,work_dir)
-        run_mapper(i, work_dir,read_list )
-        n=run_nreplace(i, work_dir=work_dir)
-        print(n)
+   # for i in range(11,14): # can change to while <10 or something to set a end of filling
+   #     i=get_xi(i)
+   #     pre_dir_file(i,work_dir)
+   #     run_mapper(i, work_dir,read_list )
+   #     n=run_nreplace(i, work_dir=work_dir)
+   #     print(n)
 
     # run the insertions
-    #for i in range(9, 11):
+    #for i in range(9, 11)
     #    print("------------------------------")
     #    i=get_xi(i)
     #    pre_dir_file(i,work_dir)

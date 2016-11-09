@@ -4,7 +4,7 @@
 # @Author  : Runsheng
 # @File    : muti_mpileup_test.py
 
-from utils import myexe
+from utils import myexe, dic2fasta
 import vcf
 
 from logger import log_summary
@@ -57,6 +57,7 @@ def get_ins_region(vcf_file, len_cutoff=5):
     The filter is built inside, with
     1. homo deletion
     2. coverage? DP>?
+    Normal vcf is 0 based
     :return: a dict as {I:100^101: "TTAC"}
     """
     bed_d={}
@@ -72,6 +73,31 @@ def get_ins_region(vcf_file, len_cutoff=5):
             if ins_len>=len_cutoff:
                 ins_start=record.affected_start
                 name=record.CHROM+":"+str(ins_start)+"^"+str(ins_start+1)
+                bed_d[name]=insertion
+    return bed_d
+
+
+def get_ins_region_clc(vcf_file, len_cutoff=5):
+    """
+    The filter is built inside, with
+    1. homo deletion
+    2. coverage? DP>?
+    BCFtools vcf is 1 based, CLC is 0 based?
+    :return: a dict as {I:100^101: "TTAC"}
+    """
+    bed_d={}
+    vcf_reader = vcf.Reader(open(vcf_file, 'r'))
+    for record in vcf_reader:
+        if record.var_subtype=="ins" and record.aaf[0]==1:  # choose only the homo insetion
+            alt_seq=str(record.ALT[0]).upper()
+            ref_seq=str(record.REF).upper()
+            insertion=alt_seq[len(ref_seq):]
+
+            #print alt_seq, ref_seq, insertion
+            ins_len=len(insertion)
+            if ins_len>=len_cutoff:
+                ins_start=record.affected_start
+                name=record.CHROM+":"+str(ins_start+1)+"^"+str(ins_start+2)
                 bed_d[name]=insertion
     return bed_d
 
@@ -109,7 +135,7 @@ def write_insertion_used(ins_d, outfile):
 
 
 def write_insertion_fasta(record_dict, insertion, outfile="inserted.fasta"):
-    f=open(outfile, "w")
+    new_dict={}
     for name in record_dict.keys():
         subinsertion = {}  # note , a dict is not really needed, a list can do the job
         for key in insertion.keys():
@@ -124,12 +150,10 @@ def write_insertion_fasta(record_dict, insertion, outfile="inserted.fasta"):
             seq.insert((key - 1 + i), subinsertion[key])
             i += 1
         if i!=0:
-            logger.info("%d insertions are filled to %s" %(i, name))
-        f.write(">" + str(name) + "\n")
-        f.write("".join(seq))
-        f.write("\n")
-    f.close()
+            print("%d insertions are filled to %s" %(i, name))
 
+        new_dict[name]="".join(seq)
+    dic2fasta(new_dict, outfile)
 
 if __name__=="__main__":
     ref="/home/zhaolab1/myapp/LR_toolkit/test/wkdir/temp/ref/round7_nfill.fasta"
