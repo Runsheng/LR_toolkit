@@ -102,7 +102,7 @@ def run_mapper(i,work_dir,read_list):
     os.chdir(work_dir+"/temp")
     ## make the mapping with a large -w (to get the ungapped N) and -t (speed up)
     ## as my expreience, using a long seed and a long width will help the indel calling
-    wrapper_bwamem(ref_file,read_list,prefix="round{}".format(i),core=32, w=25000, k=20)
+    wrapper_bwamem(ref_file,read_list,prefix="round{}".format(i),core=32, w=25000, k=50)
     print(os.listdir("."))
 # ----------------------------------------------------------------------------------------------------------------------
 # Just test the new bam mapping data and the old
@@ -143,7 +143,8 @@ def run_nreplace(i, work_dir):
     if len(N_replace)<=5:
         return -1
     else:
-        sequence_replace(record_dict=record_dict, N_replace=N_replace, outfile="round{}_nfill.fasta".format(i[:-1]+str(int(-1)+1)))
+        sequence_replace(record_dict=record_dict, N_replace=N_replace, outfile="round{}_nfill.fasta".
+                         format(i[:-1]+str(int(i[-1])+1)))
         return i
 
 
@@ -250,14 +251,41 @@ if __name__=="__main__":
     # test code for the first round of N_replace
     #n = run_nreplace(0, work_dir=work_dir)
     # true run code for the replace, the validation for the repeat should be added separately
-    i=11
-    i = get_xi(i)
-    run_clc_ins(i,work_dir,vcfone="roundx1_used.vcf")
+    #i=11
+    #i = get_xi(i)
+    #run_clc_ins(i,work_dir,vcfone="roundx1_used.vcf")
 
-    i=get_xi(12)
-    pre_dir_file(i, work_dir)
-    run_mapper(i,work_dir,read_list)
-    run_nreplace(i, work_dir=work_dir)
+    #i=get_xi(12)
+    #pre_dir_file(i, work_dir)
+    # run_mapper(i,work_dir,read_list)
+    #run_nreplace(i, work_dir=work_dir)
+
+    #i=get_xi(13)
+    #pre_dir_file(i, work_dir)
+    #run_mapper(i, work_dir,read_list )
+    #run_clc_ins(i, work_dir, vcfone="roundx3_s.vcf")
+
+    #i=get_xi(14)
+    #pre_dir_file(i, work_dir)
+    #run_mapper(i,work_dir,read_list)
+    #run_nreplace(i, work_dir=work_dir)
+
+    #i=get_xi(15)
+    #pre_dir_file(i, work_dir)
+    #run_mapper(i,work_dir,read_list)
+
+    #run_clc_ins(i,work_dir,vcfone="roundx5_s_add - locally realigned (Variants)_selection.vcf")
+
+    #i=get_xi(16)
+    #pre_dir_file(i, work_dir)
+    #run_mapper(i,work_dir,read_list)
+    #run_nreplace(i, work_dir=work_dir)
+
+    i=get_xi(17)
+    #pre_dir_file(i,work_dir)
+    #run_mapper(i,work_dir,read_list)
+
+
 
    # for i in range(11,14): # can change to while <10 or something to set a end of filling
    #     i=get_xi(i)
@@ -274,4 +302,3 @@ if __name__=="__main__":
     #    run_mapper(i, work_dir, read_list)
     #    run_indel_caller(i, work_dir, core=40)
     #    run_insertion(i,work_dir)
-
