@@ -25,6 +25,16 @@ def show_runcmd(fn):
     return wrapper
 
 
+def wrapper_abra(input,ref,bed,core,work_dir):
+    """
+    using abra to do the re-alignment
+    the used version of abra is 0.97
+    :return:
+    """
+    cmd="java -Xmx4G -jar {JAR} --in {in} --out {out} --ref {ref} --targets {bed} --threads {core} --working {work_dir} > abra.log 2>&1"
+    #format(JAR=jarpath, in=in,ref=ref, bed=bed, core=core, work_dir=work_dir)
+    pass
+
 
 def wrapper_bwamem(index, read_list, prefix="default", core=32, w=15000, k=50):
     """
