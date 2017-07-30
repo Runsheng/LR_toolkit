@@ -50,17 +50,6 @@ def get_xi(i):
     return(i/10*"x"+str(i%10))
 
 
-def get_i(xi):
-    i=0
-    for x_single in xi:
-        if x_single=="x":
-            i+=10
-        else:
-            i+=int(x_single)
-    return i
-
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 def pre_dir_file(i,work_dir,ref_file=None):
     """
@@ -86,9 +75,9 @@ def pre_dir_file(i,work_dir,ref_file=None):
         else:
             shutil.copyfile( ref_file, (tmp_ref_dir+"/round{}.fasta".format(i)) )
     else:
-        ref_last=sorted(glob((work_dir+"/*.fasta")))[-1]
+        ref_last=glob((work_dir+"/*.fasta"))[-1]
         shutil.copy(ref_last, tmp_ref_dir)
-        print(ref_last)
+
     return tmp_ref_dir
 
 
@@ -148,15 +137,14 @@ def run_nreplace(i, work_dir):
                    N_list=N_roundi, outfile=work_dir+"/N_round{}.txt".format(i),flanking=5)
     # read the file to mem
     N_replace= read_nreplace(work_dir+"/N_round{}.txt".format(i), flanking=5)
-    write_nreplace_used(N_replace, outfile=work_dir+"/N_round{}_used.txt".format(i))
-    i_next = get_xi(get_i(i) + 1)
 
+    write_nreplace_used(N_replace, outfile=work_dir+"/N_round{}_used.txt".format(i))
 
     if len(N_replace)<=5:
         return -1
     else:
         sequence_replace(record_dict=record_dict, N_replace=N_replace, outfile="round{}_nfill.fasta".
-                         format(i_next))
+                         format(i[:-1]+str(int(i[-1])+1)))
         return i
 
 
@@ -216,8 +204,7 @@ def run_insertion(i, work_dir):
         ins_all.update(ins_one)
 
     write_insertion_used(ins_all, "ins_round{}.txt".format(i))
-    i_next=get_xi(get_i(i)+1)
-    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i_next))
+    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i[:-1]+str(int(i[-1])+1)))
 
 
 from sequence_insert import _read_insertion
@@ -239,8 +226,7 @@ def run_clc_ins(i, work_dir, vcfone):
     ins_all= get_ins_region_clc(vcfone, len_cutoff=5)
 
     write_insertion_used(ins_all, "ins_round{}.txt".format(i))
-    i_next=get_xi(get_i(i)+1)
-    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i_next))
+    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i[:-1]+str(int(i[-1])+1)))
 
 
 
@@ -295,36 +281,12 @@ if __name__=="__main__":
     #run_mapper(i,work_dir,read_list)
     #run_nreplace(i, work_dir=work_dir)
 
-    #i=get_xi(17)
+    i=get_xi(17)
     #pre_dir_file(i,work_dir)
     #run_mapper(i,work_dir,read_list)
-    #run_clc_ins(i,work_dir,vcfone="roundx7_s - locally realigned (Variants, MVF)_selection.vcf")
 
-    #i=get_xi(18)
-    #pre_dir_file(i,work_dir)
-    #run_mapper(i,work_dir,read_list)
-    #run_nreplace(i,work_dir)
 
-    #i=get_xi(19)
-    #pre_dir_file(i,work_dir)
-    #run_mapper(i,work_dir,read_list)
-    # wait for clc_realign output, realign using 2 rounds
-    #run_nreplace(i, work_dir)
 
-    #for i in range(20, 25):
-    #    i=get_xi(i)
-    #    pre_dir_file(i,work_dir)
-    #    run_mapper(i,work_dir,read_list)
-    #    run_nreplace(i, work_dir)
-
-    i=get_xi(21)
-    #run_mapper(i,work_dir,read_list)
-    run_clc_ins(i,work_dir,vcfone="/home/zhaolab1/roundxx1_s - locally realigned (Variants)_selection.vcf")
-
-    i=get_xi(22)
-    pre_dir_file(i,work_dir)
-    run_mapper(i,work_dir,read_list)
-    run_nreplace(i,work_dir)
    # for i in range(11,14): # can change to while <10 or something to set a end of filling
    #     i=get_xi(i)
    #     pre_dir_file(i,work_dir)

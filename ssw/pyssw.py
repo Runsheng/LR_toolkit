@@ -5,7 +5,7 @@
 @package pyssw
 @brief Python standalone program for ssw alignment using the C library
 Complete-Striped-Smith-Waterman-Library
-Biopython module is require for fastq/fastq parsing
+Biopython SeqIO module is require for fasta/fastq parsing
 @copyright  [The MIT licence](http://opensource.org/licenses/MIT)
 @author     Adrien Leger - 2014
 * <adrien.leger@gmail.com>
