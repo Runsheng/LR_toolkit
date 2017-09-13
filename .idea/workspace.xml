@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="575e7f70-7a4c-4e15-b9f8-6b0445de42f6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cons.py" afterPath="$PROJECT_DIR$/cons.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ssw/README.md" afterPath="$PROJECT_DIR$/ssw/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_mainflow.py" afterPath="$PROJECT_DIR$/test/test_mainflow.py" />
     </list>
@@ -1133,9 +1132,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="232" column="21" selection-start-line="232" selection-start-column="21" selection-end-line="232" selection-end-column="21" />
-          <folding>
-            <element signature="e#208#245#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
