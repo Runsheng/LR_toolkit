@@ -122,6 +122,7 @@ def cons(DEL,A,C,G,T):
 
 def write_nreplace(record_dict, samfile_dir, N_list, outfile, flanking=5):
     """
+    write a fasta format pseudo-alignment file for the "N" region with flanking
     :param samfile:
     :param N_list:
     :param outfile:

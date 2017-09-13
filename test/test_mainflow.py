@@ -14,7 +14,7 @@ import logging
 
 # used in run_mapper
 from utils import myexe
-from wrapper import wrapper_bwamem
+from wrapper import wrapper_bwamem, flow_maf
 from utils import myglob  # recursive glob for python 2
 from glob import glob # normal glob
 
@@ -50,17 +50,6 @@ def get_xi(i):
     return(i/10*"x"+str(i%10))
 
 
-def get_i(xi):
-    i=0
-    for x_single in xi:
-        if x_single=="x":
-            i+=10
-        else:
-            i+=int(x_single)
-    return i
-
-
-
 # ----------------------------------------------------------------------------------------------------------------------
 def pre_dir_file(i,work_dir,ref_file=None):
     """
@@ -86,9 +75,9 @@ def pre_dir_file(i,work_dir,ref_file=None):
         else:
             shutil.copyfile( ref_file, (tmp_ref_dir+"/round{}.fasta".format(i)) )
     else:
-        ref_last=sorted(glob((work_dir+"/*.fasta")))[-1]
+        ref_last=glob((work_dir+"/*.fasta"))[-1]
         shutil.copy(ref_last, tmp_ref_dir)
-        print(ref_last)
+
     return tmp_ref_dir
 
 
@@ -148,15 +137,14 @@ def run_nreplace(i, work_dir):
                    N_list=N_roundi, outfile=work_dir+"/N_round{}.txt".format(i),flanking=5)
     # read the file to mem
     N_replace= read_nreplace(work_dir+"/N_round{}.txt".format(i), flanking=5)
-    write_nreplace_used(N_replace, outfile=work_dir+"/N_round{}_used.txt".format(i))
-    i_next = get_xi(get_i(i) + 1)
 
+    write_nreplace_used(N_replace, outfile=work_dir+"/N_round{}_used.txt".format(i))
 
     if len(N_replace)<=5:
         return -1
     else:
         sequence_replace(record_dict=record_dict, N_replace=N_replace, outfile="round{}_nfill.fasta".
-                         format(i_next))
+                         format(i[:-1]+str(int(i[-1])+1)))
         return i
 
 
@@ -216,8 +204,7 @@ def run_insertion(i, work_dir):
         ins_all.update(ins_one)
 
     write_insertion_used(ins_all, "ins_round{}.txt".format(i))
-    i_next=get_xi(get_i(i)+1)
-    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i_next))
+    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i[:-1]+str(int(i[-1])+1)))
 
 
 from sequence_insert import _read_insertion
@@ -239,8 +226,7 @@ def run_clc_ins(i, work_dir, vcfone):
     ins_all= get_ins_region_clc(vcfone, len_cutoff=5)
 
     write_insertion_used(ins_all, "ins_round{}.txt".format(i))
-    i_next=get_xi(get_i(i)+1)
-    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i_next))
+    write_insertion_fasta(ref_dict, ins_all, "round{}_inserted.fasta".format(i[:-1]+str(int(i[-1])+1)))
 
 
 
@@ -256,12 +242,9 @@ def run_main(i=2):
     i_p=i-1
 
 
-
-
-if __name__=="__main__":
-
-    work_dir="/home/zhaolab1/myapp/LR_toolkit/test/wkdir"
-    read_list=["/home/zhaolab1/myapp/LR_toolkit/test/cb12s.fq"]
+def cb4():
+    #work_dir="/home/zhaolab1/myapp/LR_toolkit/test/wkdir"
+    #read_list=["/home/zhaolab1/myapp/LR_toolkit/test/cb12s.fq"]
     # test code for the first round of N_replace
     #n = run_nreplace(0, work_dir=work_dir)
     # true run code for the replace, the validation for the repeat should be added separately
@@ -295,37 +278,10 @@ if __name__=="__main__":
     #run_mapper(i,work_dir,read_list)
     #run_nreplace(i, work_dir=work_dir)
 
-    #i=get_xi(17)
+    i=get_xi(17)
     #pre_dir_file(i,work_dir)
     #run_mapper(i,work_dir,read_list)
-    #run_clc_ins(i,work_dir,vcfone="roundx7_s - locally realigned (Variants, MVF)_selection.vcf")
 
-    #i=get_xi(18)
-    #pre_dir_file(i,work_dir)
-    #run_mapper(i,work_dir,read_list)
-    #run_nreplace(i,work_dir)
-
-    #i=get_xi(19)
-    #pre_dir_file(i,work_dir)
-    #run_mapper(i,work_dir,read_list)
-    # wait for clc_realign output, realign using 2 rounds
-    #run_nreplace(i, work_dir)
-
-    #for i in range(20, 25):
-    #    i=get_xi(i)
-    #    pre_dir_file(i,work_dir)
-    #    run_mapper(i,work_dir,read_list)
-    #    run_nreplace(i, work_dir)
-
-    i=get_xi(21)
-    pre_dir_file(i,work_dir)
-    #run_mapper(i,work_dir,read_list)
-    run_clc_ins(i,work_dir,vcfone="/home/zhaolab1/roundxx1_s - locally realigned (Variants)_selection.vcf")
-
-    i=get_xi(22)
-    pre_dir_file(i,work_dir)
-    run_mapper(i,work_dir,read_list)
-    run_nreplace(i,work_dir)
    # for i in range(11,14): # can change to while <10 or something to set a end of filling
    #     i=get_xi(i)
    #     pre_dir_file(i,work_dir)
@@ -341,3 +297,24 @@ if __name__=="__main__":
     #    run_mapper(i, work_dir, read_list)
     #    run_indel_caller(i, work_dir, core=40)
     #    run_insertion(i,work_dir)
+
+def flow_nrepalce(work_dir, read_list, ref_file=None, i=0):
+
+    tmp_ref_dir=pre_dir_file(i, work_dir, ref_file)
+    run_mapper(i, work_dir, read_list)
+    run_nreplace(i, work_dir)
+
+
+if __name__=="__main__":
+
+    wkdir="/home/zhaolab1/data/matepair/out_hmb/two"
+    i=0
+    ref_file="/home/zhaolab1/data/matepair/out_hmb/two/cn1_hmb.fasta"
+    read_list=["/home/zhaolab1/data/matepair/out_hmb/two/ju_canu.fa"]
+
+    query=read_list[0]
+
+    bamfile= flow_maf(c_target=ref_file, c_query=query, core=32, wkdir=wkdir)
+
+
+    #flow_nrepalce(wkdir, read_list, ref_file, i)

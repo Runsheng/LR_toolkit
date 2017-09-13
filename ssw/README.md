@@ -59,19 +59,5 @@ M00785:2:000000000-A60JC:1:1101:13644:1543	0	Virus_genome	1985	0	21M1I129M	*	0	0
 M00785:2:000000000-A60JC:1:1101:13883:1547	16	Virus_genome	716	0	36M2D115M	*	0	0	CTTACC...GGAATT	>AA1>C...////?F    AS:i:294
 ...
 ```
-###Speed and memory usage of pyssw
 
-Intel Core i5 3320PM CPU @ 2.60GHz x 2
-
-* E. coli K12 U0096.3 (4,641,652 nucleotides) vs 10,000 illumina reads (50pb) from [CLoVR public repository](http://data.clovr.org/d/17/e-coli-illumina-inputs)
-
-    ```pyssw.py -s Ecoli_K12_U0096.3.fa -q Ecoli_illumina_10k.fastq -r -f 80```
-
-    Time : ~55m 40s
-
-* Short virus reference (2,216 nt) vs 100,000 illumina Miseq reads (150pb) (see demo dataset)
-
-    ```pyssw.py -s Virus_genome.fa.gz -q 100k_illumina1.fastq.gz -f 250```
-
-    Time : ~60s
 
